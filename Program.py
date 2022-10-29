@@ -17,6 +17,8 @@ class Program():
         self.topics = open('Databank/topics.txt')
 
         gui_interface = ig.InterfaceGUI(self)
+        #self.generator = g.Generator(self, 5, 5)
+        
 
     def generate(self,r_count,p_count):
         self.generator = g.Generator(self, r_count, p_count)
