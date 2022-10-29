@@ -16,7 +16,7 @@ from Scriptbank import LocationGraph, Location
 import random
 
 
-class Generator:
+class Generator():
 
     def __init__(self, parent):
         self.roomItems = parent.roomItems
@@ -25,6 +25,7 @@ class Generator:
         self.boysNames = parent.boysNames
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
+        print("Fuck!")
         self.createRooms(5)
 
     def createRelationships():
@@ -57,7 +58,7 @@ class Generator:
         # you can either have a parent or a sibling
         print("")
 
-    def createRooms(roomCount):
+    def createRooms(self,roomCount):
 
         print("hi")
         

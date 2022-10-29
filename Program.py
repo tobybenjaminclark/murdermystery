@@ -15,3 +15,5 @@ class Program():
 
         self.generator = Generator(self)
 
+p = Program()
+
