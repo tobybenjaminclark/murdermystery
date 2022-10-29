@@ -12,8 +12,10 @@
 
 # save all as txt files?
 
+from Scriptbank.RelationshipGraph import RelationshipGraph
 from .LocationGraph import LocationGraph
 from .Location import Location
+from .Person import Person
 import random
 
 
@@ -27,40 +29,82 @@ class Generator():
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
         self.createRooms(5)
+        self.createPeople(5)
 
-    def createRelationships():
-        relationships = {"stranger", "acquaintance", "friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"}
+    def createRelationships(self, peopleCount):
+        relationships = {"acquaintance", "friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"}
+        relationshipGraph = RelationshipGraph()
+        # people = list of all people..
+        # everyone should have at least 1 connections
 
-        # make relationship map
-        # every person has a relationship to every other person
+        for x in self.people:
+            relationshipGraph.addNode(x.id)
 
-        # stranger -> stranger
-        # friend -> friend
-        # acquaintance -> acquaintance 
 
-        # father (male) -> son (male)
-        # father (male) -> daughter (female)
-        # mother (female) -> son (male)
-        # mother (female) -> daughter (female)
+        edgearr = []
+        visited_people = []
+        unvisited_people = []
+        for person in self.people:
+            unvisited_people.append(person.id)
 
-        # brother (male) -> brother (male)
-        # brother (male) -> sister (female)
+        r1 = unvisited_people.pop(random.randrange(0,len(unvisited_people)))
+        visited_people.append(r1)
+        while len(unvisited_people) > 0: # everyone should have 1 relationship
+            r2 = unvisited_people.pop(random.randrange(0,len(unvisited_people)))
+            edgearr.append([r1,r2])
+            visited_people.append(r2)
+            r1 = r2
+
+            # you can either be parent or sibling
+            # anyone can be friends with anyone
+
+
         
-        # husband (male) -> wife (female)
 
-        # you can either have a parent or a sibling
-
-
-
-    def createPerson(self, gender):
-        #if(gender == "f"):
-            # use girl name file
-            #index = random.get
+        
+        
 
 
-        #else:
-            # use boy name file
-        print("")
+
+
+    def createPeople(self, peopleCount):
+        if(peopleCount == -1):
+            peopleCount = random.randint(5,50)
+
+        boys = self.boysNames.readlines()
+        for x in range(0, len(boys)):
+            boys[x] = boys[x].strip('\t\n')
+
+        girls = self.girlsNames.readlines()
+        for x in range(0, len(girls)):
+            girls[x] = girls[x].strip('\t\n')
+
+        self.people = []
+        index = 1
+
+        for x in range(0, peopleCount):
+
+
+            if(random.random() < 0.5):
+                # person is male
+                name = boys[random.randint(0, len(boys))]
+                self.people.append(Person(index, name, random.randint(0,80), 'male'))
+
+
+            else:
+                # person is female
+                name = girls[random.randint(0, len(boys))]
+                self.people.append(Person(index, name, random.randint(0,80), 'female'))
+
+            index += 1
+            
+        for x in self.people:
+            print(x.id, x.name, x.age, x.gender)
+        
+        self.createRelationships()
+        
+
+
 
 
     def createRooms(self,roomCount):
@@ -120,23 +164,22 @@ class Generator():
         while len(unvisited_rooms) > 0:
             r2 = unvisited_rooms.pop(random.randrange(0,len(unvisited_rooms)))
             edgedict.update({r1:r2})
+            locationGraph.addEdge(r1,r2)
             visited_rooms.append(r2)
             r1 = r2
 
-        print(edgedict)
-
         # adding more random connections
-        '''while(True):
+        while(True):
             start = random.randint(0, len(self.rooms) - 1)
             end = random.randint(0, len(self.rooms) - 1)
 
             if(not (start == end)):
                 locationGraph.addEdge(self.rooms[start].id, self.rooms[end].id)
 
-            if(random.random() > 0.5):
+            if(random.random() > 0.8):
                 break
 
-        locationGraph.showGraph()'''
+        locationGraph.showGraph()
         
             
 

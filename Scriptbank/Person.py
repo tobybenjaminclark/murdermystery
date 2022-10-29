@@ -9,11 +9,11 @@
 
 class Person:
 
-    def __init__(self, id, name, age, occupation):
+    def __init__(self, id, name, age, gender):
         self.id = id
         self.name = name
         self.age = age
-        self.occupation = occupation
+        self.gender = gender
         self.isMurderer = False # after set random person to true
         self.isDead = False
         self.contains = [] # maybe change this to in event
