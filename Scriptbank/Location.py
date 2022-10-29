@@ -8,12 +8,10 @@
 
 class Location():
 
-    count = 1
 
     def __init__(self, id, roomName):
         # roomName
-        self.id = count
-        count+=1
+        self.id = id
 
         self.roomName = roomName
         

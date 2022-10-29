@@ -65,8 +65,6 @@ class Generator():
 
     def createRooms(self,roomCount):
 
-        print("hi")
-        
         # generate amount of rooms
         if(roomCount == -1):
             roomCount = random.randint(5,50)
@@ -74,19 +72,60 @@ class Generator():
         # make every room a node in the graph
         locationGraph = LocationGraph()
 
-        possibleRooms = {"Bedroom ", "Dining Hall ", "Corridor ", "Kitchen ", "Living Room ", "Balcony "}
+        possibleRooms = ["Bedroom ", "Dining Hall ", "Corridor ", "Kitchen ", "Living Room ", "Balcony "]
 
-        rooms = []
+        count = 1
+        self.rooms = []
+        roomAmounts = { }
+
+        for i in possibleRooms:
+            roomAmounts[i] = 0
+
         for x in range(0, roomCount):
             # assign the room to a room in possibleRooms
 
-            chosenRoom = random.randint(0, len(possibleRooms)-1)
-            rooms.append(Location(possibleRooms[chosenRoom]))
-            print(rooms[x])
+            chosenRoom = possibleRooms[random.randint(0, len(possibleRooms)-1)]
+            roomAmounts[chosenRoom] += 1
+            roomName = chosenRoom + str(roomAmounts[chosenRoom])
 
+            self.rooms.append(Location(count, roomName))
+            print(self.rooms[x].id , " " , roomName)
+            count +=1
+
+        self.createLocationGraph()
         
 
-        # starts off as Bedroom 1. Another bedroom added = bedroom 2...
+    def createLocationGraph(self):
+        # rooms: list of all rooms
 
+        locationGraph = LocationGraph()
+
+        for x in self.rooms:
+            locationGraph.addNode((x.id))
+        # add a node of every room
+
+        # add random connections
+        # min: 0, max: rooms!
+        # if(every node is connected to every other node): stop
+        # if()
+
+        while(True):
+            start = random.randint(0, len(self.rooms) - 1)
+            end = random.randint(0, len(self.rooms) - 1)
+
+            if(not (start == end)):
+                locationGraph.addEdge(self.rooms[start].id, self.rooms[end].id)
+
+            if(random.random() > 0.9):
+                break
+
+        duplicates = locationGraph.showGraph()
+        
+            
+
+
+
+
+            
 
 
