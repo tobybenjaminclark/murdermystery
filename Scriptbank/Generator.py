@@ -109,8 +109,21 @@ class Generator():
         # if(every node is connected to every other node): stop
         # if()
 
+        edgedict = {}
+        visited_rooms = []
+        unvisited_rooms = []
+        for roo in self.rooms:
+            unvisited_rooms.append(roo.id)
 
+        r1 = unvisited_rooms.pop(random.randrange(0,len(unvisited_rooms)))
+        visited_rooms.append(r1)
+        while len(unvisited_rooms) > 0:
+            r2 = unvisited_rooms.pop(random.randrange(0,len(unvisited_rooms)))
+            edgedict.update({r1:r2})
+            visited_rooms.append(r2)
+            r1 = r2
 
+        print(edgedict)
 
         # adding more random connections
         '''while(True):
