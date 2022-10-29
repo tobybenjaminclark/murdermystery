@@ -21,15 +21,15 @@ import random
 
 class Generator():
 
-    def __init__(self, parent):
+    def __init__(self, parent, r_count, p_count):
         self.roomItems = parent.roomItems
         self.holdableItems = parent.holdableItems
         self.girlsNames = parent.girlsNames
         self.boysNames = parent.boysNames
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
-        self.createRooms(5)
-        self.createPeople(5)
+        self.createRooms(r_count)
+        self.createPeople(p_count)
 
     def createRelationships(self, peopleCount):
 
@@ -128,13 +128,6 @@ class Generator():
 
 
         relationshipGraph.showGraph()
-
-
-        
-
-        
-        
-
 
 
 

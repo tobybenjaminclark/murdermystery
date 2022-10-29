@@ -3,7 +3,7 @@ import random
 
 class GUI():
 
-    def __init__(self):
+    def __init__(self, parent):
 
         self.sch = {
             1:"#2b2d42",
@@ -129,6 +129,13 @@ class GUI():
             font = self.sch['bigfont'],
             highlightbackground=self.sch[1])
 
+        self.submit_button = Button(self.master,
+            text = "Continue",
+            fg = 'black',
+            highlightbackground=self.sch[1],
+            font = self.sch['bigfont'],
+            command = lambda e=1: self.submitData(e))
+
         self.logo.pack()
 
         self.introlabel.pack()
@@ -153,4 +160,10 @@ class GUI():
         self.people_scale.set(random.randrange(5,250))
         self.master.update()
 
-p = GUI()
+    def submitData(self, e):
+        self.parent.submit_data()
+        del e
+
+    def clear(self):
+        for widget in self.master.winfo_children():
+            widget.destroy()
