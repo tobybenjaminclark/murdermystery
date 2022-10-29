@@ -1,9 +1,17 @@
 # import the text files from Databank
 
-girlNames = open('Databank/girlsNames.txt')
-boysNames = open('Databank/boysNames.txt')
-adjectives = open('Databank/adjectives.txt')
-holdableItems = open('Databank/holdableItems.txt')
-roomItems = open('Databank/roomItems.txt')
-surnames = open('Databank/surnames.txt')
+from Scriptbank import Generator
+
+class Program():
+
+    def __init__(self):
+
+        self.girlNames = open('Databank/girlsNames.txt')
+        self.boysNames = open('Databank/boysNames.txt')
+        self.adjectives = open('Databank/adjectives.txt')
+        self.holdableItems = open('Databank/holdableItems.txt')
+        self.roomItems = open('Databank/roomItems.txt')
+        self.surnames = open('Databank/surnames.txt')
+
+        self.generator = Generator(self)
 
