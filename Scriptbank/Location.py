@@ -14,4 +14,5 @@ class Location():
         self.id = id
 
         self.roomName = roomName
+        self.contains = []
         

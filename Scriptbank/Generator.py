@@ -16,6 +16,7 @@ from Scriptbank.RelationshipGraph import RelationshipGraph
 from .LocationGraph import LocationGraph
 from .Location import Location
 from .Person import Person
+from .Event import Event
 import random
 
 
@@ -30,6 +31,11 @@ class Generator():
         self.adjectives = parent.adjectives
         self.createRooms(r_count)
         self.createPeople(p_count)
+        self.distributeItems()
+        e = Event(self)
+        
+
+        
 
 
     def distributeItems(self):
@@ -41,35 +47,51 @@ class Generator():
             # can belong to room
             # max 2 per room
 
-        boys = self.boysNames.readlines()
-        for x in range(0, len(boys)):
-            boys[x] = boys[x].strip('\t\n')
+        # non movable
+        nmItems = self.roomItems.readlines()
+        for x in range(0, len(nmItems)):
+            nmItems[x] = nmItems[x].strip('\t\n')
         
+        while(True):
+            chosenRoom = self.rooms[random.randint(0, len(self.rooms) - 1)]
+            item = nmItems[random.randint(0, len(nmItems) - 1)]
+
+            if(len(chosenRoom.contains) < 2):
+                chosenRoom.contains.append(item)
+            
+            if(random.random() < 0.2):
+                break
 
 
+        mItems = self.holdableItems.readlines()
+        for x in range(0, len(mItems)-1):
+            mItems[x] = mItems[x].strip('\t\n')
         
+        while(True):
+            # can either go to a room or a person.. 50% chance of each
+            roomOrPerson = random.random()
+            if(roomOrPerson < 0.5):
+                # room
+                chosenRoom = self.rooms[random.randint(0, len(self.rooms) - 1)]
+                item = mItems[random.randint(0, len(mItems) - 1)]
 
-        pass
+                if(len(chosenRoom.contains) < 3):
+                    chosenRoom.contains.append(item)
+                
+                if(random.random() < 0.2):
+                    break
+    
+            else:
+                # person
+                chosenPerson = self.people[random.randint(0, len(self.people) - 1)]
+                item = mItems[random.randint(0, len(mItems) - 1)]
 
+                if(len(chosenPerson.contains) < 2):
+                    chosenPerson.contains.append(item)
+                
+                if(random.random() < 0.2):
+                    break
 
-    def distributeItems(self):
-        # moveable:
-            # can belong to person or room
-            # max 2 per person.. 3 per room
-
-        # not moveable:
-            # can belong to room
-            # max 2 per room
-
-        boys = self.boysNames.readlines()
-        for x in range(0, len(boys)):
-            boys[x] = boys[x].strip('\t\n')
-        
-
-
-        
-
-        pass
 
     def createRelationships(self, peopleCount):
 
@@ -162,10 +184,7 @@ class Generator():
                     relationshipGraph.addEdge(p2.id,p1.id,7)
                 else:
                     relationshipGraph.addEdge(p2.id,p1.id,8)
-            
 
-
-        relationshipGraph.showGraph()
 
 
     def createPeople(self, peopleCount):
@@ -199,8 +218,6 @@ class Generator():
 
             index += 1
             
-        for x in self.people:
-            print(x.id, x.name, x.age, x.gender)
         
         self.createRelationships(peopleCount)
         
@@ -231,7 +248,6 @@ class Generator():
             roomName = chosenRoom + str(roomAmounts[chosenRoom])
 
             self.rooms.append(Location(count, roomName))
-            print(self.rooms[x].id , " " , roomName)
             count +=1
 
         self.createLocationGraph()
