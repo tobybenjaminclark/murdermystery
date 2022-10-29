@@ -109,17 +109,21 @@ class Generator():
         # if(every node is connected to every other node): stop
         # if()
 
-        while(True):
+
+
+
+        # adding more random connections
+        '''while(True):
             start = random.randint(0, len(self.rooms) - 1)
             end = random.randint(0, len(self.rooms) - 1)
 
             if(not (start == end)):
                 locationGraph.addEdge(self.rooms[start].id, self.rooms[end].id)
 
-            if(random.random() > 0.9):
+            if(random.random() > 0.5):
                 break
 
-        duplicates = locationGraph.showGraph()
+        locationGraph.showGraph()'''
         
             
 
