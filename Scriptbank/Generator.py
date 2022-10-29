@@ -12,8 +12,8 @@
 
 # save all as txt files?
 
-import LocationGraph
-import Location
+from .LocationGraph import LocationGraph
+from .Location import Location
 import random
 
 

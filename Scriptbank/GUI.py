@@ -21,16 +21,22 @@ class GUI():
     def create_generator(self):
         self.generator_elements = []
 
+        # Number of Rooms Slider Label
+        self.room_scale_label = Label(self.master,
+        text = "Number of Rooms")
+
         # Number of Rooms Slider
         self.room_var = DoubleVar()
         self.room_scale = Scale(self.master,
             variable = self.room_var, 
-            from_ = 1,
-            to = 100, 
+            from_ = 5,
+            to = 250,
+            resolution = 5, 
             length = 500,
             sliderlength = 10,
             orient = HORIZONTAL)  
 
+        self.room_scale_label.pack()
         self.room_scale.pack()
         
 p = GUI()
