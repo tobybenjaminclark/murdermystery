@@ -16,7 +16,7 @@ from Scriptbank import LocationGraph, Location
 import random
 
 
-class Generator():
+class Generator()():
 
     def __init__(self, parent):
         self.roomItems = parent.roomItems
@@ -30,13 +30,6 @@ class Generator():
 
     def createRelationships():
         relationships = {"stranger", "acquaintance", "friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"}
-
-
-
-    def createPeople():
-        # random choice of being m or f
-        # random first name from file
-        # random surname
 
         # make relationship map
         # every person has a relationship to every other person
@@ -56,9 +49,21 @@ class Generator():
         # husband (male) -> wife (female)
 
         # you can either have a parent or a sibling
+
+
+
+    def createPerson(self, gender):
+        #if(gender == "f"):
+            # use girl name file
+            #index = random.get
+
+
+        #else:
+            # use boy name file
         print("")
 
-    def createRooms(self,roomCount):
+
+    def createRooms(self, self,roomCount):
 
         print("hi")
         
