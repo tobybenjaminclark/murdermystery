@@ -31,6 +31,26 @@ class Generator():
         self.createRooms(5)
         self.createPeople(5)
 
+
+    def distributeItems(self):
+        # moveable:
+            # can belong to person or room
+            # max 2 per person.. 3 per room
+
+        # not moveable:
+            # can belong to room
+            # max 2 per room
+
+        boys = self.boysNames.readlines()
+        for x in range(0, len(boys)):
+            boys[x] = boys[x].strip('\t\n')
+        
+
+
+        
+
+        pass
+
     def createRelationships(self, peopleCount):
 
         # relationships go: is 'mother' of / is 'father' of / is 'daughter' of
@@ -71,13 +91,13 @@ class Generator():
             p1 = upeople.pop(random.randrange(0,len(upeople)))
             p2 = upeople.pop(random.randrange(0,len(upeople)))
 
-            # you arent checking if the mother / father are the right gender
+            # making sure the mother / father are the right gender
             r = random.randrange(1,5)
             if(r == 1 or r == 2):
                 if(p1.gender == 'male'):
                     r = 1
                 else: r = 2
-                
+
             if r == 1:
                 # FATHER / CHILD
                 p1.age = p2.age+random.randrange(22,32)
@@ -128,14 +148,6 @@ class Generator():
         relationshipGraph.showGraph()
 
 
-        
-
-        
-        
-
-
-
-
     def createPeople(self, peopleCount):
         if(peopleCount == -1):
             peopleCount = random.randint(5,50)
@@ -172,9 +184,6 @@ class Generator():
         
         self.createRelationships(peopleCount)
         
-
-
-
 
     def createRooms(self,roomCount):
 
