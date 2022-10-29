@@ -10,8 +10,8 @@ class Event():
 
     def __init__(self, gen):
         self.gen = gen
-        self.people = self.gen.self.people
-        self.rooms = self.gen.self.rooms
+        self.people = self.gen.people
+        self.rooms = self.gen.rooms
         self.generateRoomTimes()
         self.initialRooms()
 

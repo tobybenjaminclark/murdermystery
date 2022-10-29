@@ -281,7 +281,7 @@ class GUI():
         self.canvasFrame.pack()
         self.lower_infopanel.pack()
         self.rightmaster.pack()
-        
+
         self.master.update()
 
     def clear(self):
