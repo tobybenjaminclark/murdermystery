@@ -41,7 +41,19 @@ class GUI():
         
         # Introductory Paragraph
         introtext = """
-        Murder Mystery is a desktop-application that aims to simulate."""
+        Murder Mystery is a desktop application that challenges you to use your
+        sleuthing skills to find the killer! The game is set in a luxorious mansion,
+        filled with guests holding dark secrets and intimate relationships.
+        Can you interrogate the guests, refute the lies, and examine the
+        relationships to discover the truth?
+        
+        The game settings are incredibly adaptable, allowing you to create 
+        the perfect environment that fits your needs. You can change the
+        number of people and rooms in your game: more components will allow
+        for a more complex and challenging environment.
+        
+         """
+
         self.introlabel = Label(self.master,
         text = introtext,
         anchor=CENTER,

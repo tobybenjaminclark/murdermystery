@@ -12,6 +12,8 @@ class Program():
         self.holdableItems = open('Databank/holdableItems.txt')
         self.roomItems = open('Databank/roomItems.txt')
         self.surnames = open('Databank/surnames.txt')
+        self.occupations = open('Databank/occupations.txt')
+        self.topics = open('Databank/topics.txt')
 
         self.generator = g.Generator(self)
 
