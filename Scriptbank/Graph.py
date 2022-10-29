@@ -2,34 +2,60 @@
 class LocationGraph():
 
     def __init__(self):
+
+        # Initialize graph dictionary
         self.connections = {}
 
     def addNode(self, node):
-        self.connections.update(node,[])
+
+        # Adds node to the graph with no connections
+        self.connections.update({node:[]})
 
     def removeNode(self, node):
+
+        # Removes Node from all connections
         self.connections.pop(node)
-        for key, item in self.connections:
+        for key in self.connections:
+            item = self.connections[key]
             if node in item:
                 item.remove(node)
             else:
                 continue
-
+        
+        # Removes the Node from the graph
+        self.connections.pop(node)
+    
     def addEdge(self, node1, node2):
-        self.connections.update(node1:node2)
+
+        # Adds edge NodeA -> NodeB
+        current_connections = self.connections[node1]
+        current_connections.append(node2)
+        self.connections[node1] = current_connections
+
+        # Adds edge NodeB -> NodeA
+        current_connections = self.connections[node2]
+        current_connections.append(node1)
+        self.connections[node2] = current_connections
+        
 
     def removeEdge(self, node1, node2):
-        pass
 
-class LocationNode():
+        # Removes edge NodeA -> NodeB
+        current_connections = self.connections[node1]
+        if node2 in current_connections:
+            current_connections.remove(node2)
+            self.connections[node1] = current_connections
 
-    def __init__(self, data = None):
-        pass
+        # Removes Edge NodeB -> NodeA
+        current_connections = self.connections[node2]
+        if node1 in current_connections:
+            current_connections.remove(node1)
+            self.connections[node2] = current_connections
+    
+    
+    def showGraph(self):
 
-# connections = {
-# node1: [node2, node3],
-# node2: [node1, node5],
-# node3: [node1],
-# node4: [],
-# node5: [node2]
-# }
+        # Iterates through to show connections
+        for key in self.connections:
+            item = self.connections[key]
+            print("[",key,"] : ",item)
