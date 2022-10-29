@@ -28,12 +28,20 @@ class LocationGraph():
 
         # Adds edge NodeA -> NodeB
         current_connections = self.connections[node1]
-        current_connections.append(node2)
+        
+        if node2 not in current_connections:
+            current_connections.append(node2)
+        else:
+            pass
+
         self.connections[node1] = current_connections
 
         # Adds edge NodeB -> NodeA
         current_connections = self.connections[node2]
-        current_connections.append(node1)
+        if node1 not in current_connections:
+            current_connections.append(node1)
+        else:
+            pass
         self.connections[node2] = current_connections
         
 
