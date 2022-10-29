@@ -31,6 +31,7 @@ class Generator():
         self.adjectives = parent.adjectives
         self.createRooms(r_count)
         self.createPeople(p_count)
+        
         self.distributeItems()
         self.e = Event(self)
         
@@ -207,19 +208,20 @@ class Generator():
 
             if(random.random() < 0.5):
                 # person is male
-                name = boys[random.randint(0, len(boys))]
+                name = boys[random.randint(0, len(boys)-1)]
                 self.people.append(Person(index, name, random.randint(0,80), 'male'))
 
 
             else:
                 # person is female
-                name = girls[random.randint(0, len(boys))]
+                name = girls[random.randint(0, 500)]
                 self.people.append(Person(index, name, random.randint(0,80), 'female'))
 
             index += 1
+
+        self.createRelationships(peopleCount)
             
         
-        self.createRelationships(peopleCount)
         
 
     def createRooms(self,roomCount):
