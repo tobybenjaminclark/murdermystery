@@ -14,7 +14,6 @@ class LocationGraph():
     def removeNode(self, node):
 
         # Removes Node from all connections
-        self.connections.pop(node)
         for key in self.connections:
             item = self.connections[key]
             if node in item:
