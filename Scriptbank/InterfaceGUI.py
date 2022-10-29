@@ -5,12 +5,12 @@ class InterfaceGUI():
     def __init__(self, program):
 
         self.program = program
-        self.gui = GUI()
+        self.mastergui = GUI(self)
 
-    def submit_data(self):
+    def submit_data(self, gui):
 
-        room_count = self.gui.room_scale.get()
-        people_count = self.gui.people_scale.get()
+        room_count = gui.room_scale.get()
+        people_count = gui.people_scale.get()
         self.program.generate(room_count, people_count)
 
-        self.gui.clear()
+        gui.clear()

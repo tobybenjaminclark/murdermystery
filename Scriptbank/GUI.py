@@ -16,6 +16,7 @@ class GUI():
         }
         
         self.master = Tk()
+        self.parent = parent
         self.logoimg = PhotoImage(file = "Scriptbank/Logo.gif")
         self.master.geometry("1920x1080")
         self.master.attributes('-fullscreen','true')
@@ -150,6 +151,8 @@ class GUI():
         self.people_scale_random.grid(row=0,column=1,pady=(20,0))
         self.people_frame.pack()
 
+        self.submit_button.pack()
+
     def randomRoomScale(self,e):
         del e
         self.room_scale.set(random.randrange(5,250))
@@ -161,8 +164,9 @@ class GUI():
         self.master.update()
 
     def submitData(self, e):
-        self.parent.submit_data()
         del e
+        self.parent.submit_data(self)
+        
 
     def clear(self):
         for widget in self.master.winfo_children():

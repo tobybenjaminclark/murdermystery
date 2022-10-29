@@ -1,7 +1,7 @@
 # import the text files from Databank
 
 from Scriptbank import Generator as g
-from Scriptbank import InterfaceGUI
+from Scriptbank import InterfaceGUI as ig
 
 class Program():
 
@@ -16,7 +16,7 @@ class Program():
         self.occupations = open('Databank/occupations.txt')
         self.topics = open('Databank/topics.txt')
 
-        gui_interface = InterfaceGUI()
+        gui_interface = ig.InterfaceGUI(self)
 
     
     def generate(self, r_count, p_count):
