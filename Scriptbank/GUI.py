@@ -14,8 +14,9 @@ class GUI():
             "littelfont":("Arial 12")
         }
         
+        
         self.master = Tk()
-        self.logo = PhotoImage(file = "Scriptbank/Logo.gif")
+        self.logoimg = PhotoImage(file = "Scriptbank/Logo.gif")
         self.master.geometry("1920x1080")
         self.master.attributes('-fullscreen','true')
         self.master.configure(bg = self.sch[1])
@@ -35,7 +36,7 @@ class GUI():
 
         # Logo
         self.logo = Label(self.master,
-        image = self.logo,
+        image = self.logoimg,
         bg = self.sch[1])
         
         # Number of Rooms Slider Label
@@ -55,7 +56,7 @@ class GUI():
             length = 500,
             sliderlength = 10,
             bg = self.sch[1],
-            troughcolor = self.sch[4],
+            troughcolor = self.sch[2],
             fg = self.sch[3],
             orient = HORIZONTAL)  
 
