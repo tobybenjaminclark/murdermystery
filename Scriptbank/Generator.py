@@ -12,10 +12,12 @@
 
 # save all as txt files?
 
-import LocationGraph
+from Scriptbank import LocationGraph, Location
+import random
 
 
 class Generator:
+
     def __init__(self, parent):
         self.roomItems = parent.roomItems
         self.holdableItems = parent.holdableItems
@@ -23,6 +25,7 @@ class Generator:
         self.boysNames = parent.boysNames
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
+        self.createRooms(5)
 
     def createRelationships():
         relationships = {"stranger", "acquaintance", "friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"}
@@ -52,16 +55,32 @@ class Generator:
         # husband (male) -> wife (female)
 
         # you can either have a parent or a sibling
+        print("")
 
-    def createRooms():
-        possibleRooms = {""}
+    def createRooms(roomCount):
 
-        # - we are in a mansion, so Bedroom 1..n, Dining Hall 1..n,
-        # Corridors, Kitchens, Living Rooms, Balconys...
+        print("hi")
+        
+        # generate amount of rooms
+        if(roomCount == -1):
+            roomCount = random.randint(5,50)
+
+        # make every room a node in the graph
+        locationGraph = LocationGraph()
+
+        possibleRooms = {"Bedroom ", "Dining Hall ", "Corridor ", "Kitchen ", "Living Room ", "Balcony "}
+
+        rooms = []
+        for x in range(0, roomCount):
+            # assign the room to a room in possibleRooms
+
+            chosenRoom = random.randint(0, len(possibleRooms)-1)
+            rooms.append(Location(possibleRooms[chosenRoom]))
+            print(rooms[x])
 
         
 
-        # rooms should have a size
-        # cabin: 1
+        # starts off as Bedroom 1. Another bedroom added = bedroom 2...
 
-    
+
+
