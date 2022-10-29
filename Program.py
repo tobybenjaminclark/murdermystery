@@ -22,7 +22,7 @@ class Program():
 
     def generate(self,r_count,p_count):
         self.generator = g.Generator(self, r_count, p_count)
-        
+
 
 p = Program()
 
