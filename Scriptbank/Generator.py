@@ -32,7 +32,9 @@ class Generator():
         self.createPeople(5)
 
     def createRelationships(self, peopleCount):
-        relationships = {"acquaintance", "friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"}
+
+        # relationships go: is 'mother' of / is 'father' of / is 'daughter' of
+        relationships = ["friend", "mother", "father", "son", "daughter", "husband", "wife", "brother", "sister"]
         relationshipGraph = RelationshipGraph()
         # people = list of all people..
         # everyone should have at least 1 connections
@@ -40,23 +42,85 @@ class Generator():
         for x in self.people:
             relationshipGraph.addNode(x.id)
 
+        # friend -> friend -> friend -> frien
+        # random relationships father -> son/father -> son from a list of unvisited.
 
-        edgearr = []
-        visited_people = []
-        unvisited_people = []
-        for person in self.people:
-            unvisited_people.append(person.id)
 
-        r1 = unvisited_people.pop(random.randrange(0,len(unvisited_people)))
-        visited_people.append(r1)
-        while len(unvisited_people) > 0: # everyone should have 1 relationship
-            r2 = unvisited_people.pop(random.randrange(0,len(unvisited_people)))
-            edgearr.append([r1,r2])
-            visited_people.append(r2)
-            r1 = r2
 
-            # you can either be parent or sibling
-            # anyone can be friends with anyone
+        # Makes sure there is a main link between everyone
+        for x in range(0,random.randrange(1,4)): # adjust the 2,5 to change how close everyone is.
+            vpeople, upeople = [], []
+            for p in self.people:
+                upeople.append(p.id)
+
+            p1 = upeople.pop(random.randrange(0,len(upeople)))
+            vpeople.append(p1)
+            while(len(upeople)) > 0:
+                p2 = upeople.pop(random.randrange(0,len(upeople)))
+                relationshipGraph.addEdge(p1, p2, 0)
+                relationshipGraph.addEdge(p2, p1, 0)
+                vpeople.append(p2)
+                print(p1," <-> ",p2)
+                p1 = p2
+
+        # Adding random family elements
+        vpeople, upeople = [], []
+        for p in self.people:
+            upeople.append(p)
+
+        while(len(upeople)) > len(self.people) * 0.25:
+            p1 = upeople.pop(random.randrange(0,len(upeople)))
+            p2 = upeople.pop(random.randrange(0,len(upeople)))
+
+            r = random.randrange(1,5)
+            if r == 1:
+                # FATHER / CHILD
+                p1.age = p2.age+random.randrange(22,32)
+                relationshipGraph.addEdge(p1.id,p2.id,1)
+                if p2.gender == 'female':
+                    relationshipGraph.addEdge(p2.id,p1.id,4)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,3)
+
+            elif r == 2:
+                # MUM / CHILD
+                p1.age = p2.age+random.randrange(22,40)
+                relationshipGraph.addEdge(p1.id,p2.id,2)
+                if p2.gender == 'female':
+                    relationshipGraph.addEdge(p2.id,p1.id,4)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,3)
+            
+            elif r == 3:
+                # HUSBAND/HUSBAND / WIFE/WIFE / HUSBAND/WIFE
+                # 5 = husband, 6 = wife | is husband of, is wife of
+                if p1.gender == 'male':
+                    relationshipGraph.addEdge(p1.id,p2.id,5)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,6)
+                
+                if p2.gender == 'male':
+                    relationshipGraph.addEdge(p2.id,p1.id,5)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,6)
+             
+            elif r == 4:
+                # SIBLING 7 = Brother, 8 = Sister
+                # is brother of/is sister of
+
+                if p1.gender == 'male':
+                    relationshipGraph.addEdge(p1.id,p2.id,7)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,8)
+                
+                if p2.gender == 'male':
+                    relationshipGraph.addEdge(p2.id,p1.id,7)
+                else:
+                    relationshipGraph.addEdge(p2.id,p1.id,8)
+            
+
+
+        relationshipGraph.showGraph()
 
 
         
@@ -101,7 +165,7 @@ class Generator():
         for x in self.people:
             print(x.id, x.name, x.age, x.gender)
         
-        self.createRelationships()
+        self.createRelationships(peopleCount)
         
 
 
