@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 class GUI():
 
@@ -11,9 +12,8 @@ class GUI():
             4:"#ef233c",
             5:"#d90429",
             "bigfont":("Arial 16 bold"),
-            "littelfont":("Arial 12")
+            "littlefont":("Arial 12")
         }
-        
         
         self.master = Tk()
         self.logoimg = PhotoImage(file = "Scriptbank/Logo.gif")
@@ -39,6 +39,20 @@ class GUI():
         image = self.logoimg,
         bg = self.sch[1])
         
+        # Introductory Paragraph
+        introtext = """
+        Murder Mystery is a desktop-application that aims to simulate."""
+        self.introlabel = Label(self.master,
+        text = introtext,
+        anchor=CENTER,
+        fg = self.sch[3],
+        bg = self.sch[1],
+        font = self.sch['littlefont'])
+
+        # Room Frame
+        self.room_frame = Frame(self.master,
+        bg = self.sch[1])
+
         # Number of Rooms Slider Label
         self.room_scale_label = Label(self.master,
         text = "Number of Rooms",
@@ -48,20 +62,83 @@ class GUI():
 
         # Number of Rooms Slider
         self.room_var = DoubleVar()
-        self.room_scale = Scale(self.master,
+        self.room_scale = Scale(self.room_frame,
             variable = self.room_var, 
             from_ = 5,
             to = 250,
             resolution = 5, 
             length = 500,
             sliderlength = 10,
+            width = 20,
             bg = self.sch[1],
             troughcolor = self.sch[2],
             fg = self.sch[3],
-            orient = HORIZONTAL)  
+            orient = HORIZONTAL) 
+
+        # Number of Rooms Randomizer
+        self.room_scale_random = Button(self.room_frame,
+            text = "Random",
+            fg = 'black',
+            command = lambda e=1: self.randomRoomScale(e),
+            font = self.sch['bigfont'],
+            highlightbackground=self.sch[1])
+
+        # People Frame
+        self.people_frame = Frame(self.master,
+        bg = self.sch[1])
+
+        # Number of People Slider Label
+        self.people_scale_label = Label(self.master,
+        text = "Number of People",
+        font = self.sch["bigfont"],
+        bg = self.sch[1],
+        fg = self.sch[3])
+
+        # Number of People Slider
+        self.people_var = DoubleVar()
+        self.people_scale = Scale(self.people_frame,
+            variable = self.people_var, 
+            from_ = 5,
+            to = 250,
+            resolution = 5, 
+            length = 500,
+            width = 20,
+            sliderlength = 10,
+            bg = self.sch[1],
+            troughcolor = self.sch[2],
+            fg = self.sch[3],
+            orient = HORIZONTAL) 
+
+        # Number of Rooms Randomizer
+        self.people_scale_random = Button(self.people_frame,
+            text = "Random",
+            fg = 'black',
+            command = lambda e=1: self.randomPeopleScale(e),
+            font = self.sch['bigfont'],
+            highlightbackground=self.sch[1])
 
         self.logo.pack()
+
+        self.introlabel.pack()
+
         self.room_scale_label.pack()
-        self.room_scale.pack()
-        
+        self.room_scale.grid(row=0,column=0)
+        self.room_scale_random.grid(row=0,column=1,pady=(20,0))
+        self.room_frame.pack()
+
+        self.people_scale_label.pack()
+        self.people_scale.grid(row=0,column=0)
+        self.people_scale_random.grid(row=0,column=1,pady=(20,0))
+        self.people_frame.pack()
+
+    def randomRoomScale(self,e):
+        del e
+        self.room_scale.set(random.randrange(5,250))
+        self.master.update()
+
+    def randomPeopleScale(self,e):
+        del e
+        self.people_scale.set(random.randrange(5,250))
+        self.master.update()
+
 p = GUI()
