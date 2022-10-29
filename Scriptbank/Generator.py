@@ -21,15 +21,35 @@ import random
 
 class Generator():
 
-    def __init__(self, parent):
+    def __init__(self, parent, r_count, p_count):
         self.roomItems = parent.roomItems
         self.holdableItems = parent.holdableItems
         self.girlsNames = parent.girlsNames
         self.boysNames = parent.boysNames
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
-        self.createRooms(5)
-        self.createPeople(5)
+        self.createRooms(r_count)
+        self.createPeople(p_count)
+
+
+    def distributeItems(self):
+        # moveable:
+            # can belong to person or room
+            # max 2 per person.. 3 per room
+
+        # not moveable:
+            # can belong to room
+            # max 2 per room
+
+        boys = self.boysNames.readlines()
+        for x in range(0, len(boys)):
+            boys[x] = boys[x].strip('\t\n')
+        
+
+
+        
+
+        pass
 
 
     def distributeItems(self):
