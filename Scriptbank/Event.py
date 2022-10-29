@@ -34,6 +34,7 @@ class Event():
         # people can move to an adjacent room
         # or stay in the current room
 
+        pass
 
 
 

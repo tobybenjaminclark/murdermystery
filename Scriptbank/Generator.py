@@ -47,6 +47,12 @@ class Generator():
 
 
 
+        # 4 has two duplicate sister connections to 2
+        # 2 has no sister connections to 4
+
+        # same problem for 5 and 1
+
+
         # Makes sure there is a main link between everyone
         for x in range(0,random.randrange(1,4)): # adjust the 2,5 to change how close everyone is.
             vpeople, upeople = [], []
@@ -62,6 +68,7 @@ class Generator():
                 vpeople.append(p2)
                 print(p1," <-> ",p2)
                 p1 = p2
+                # this is a list of friends
 
         # Adding random family elements
         vpeople, upeople = [], []
@@ -97,7 +104,7 @@ class Generator():
                 if p1.gender == 'male':
                     relationshipGraph.addEdge(p1.id,p2.id,5)
                 else:
-                    relationshipGraph.addEdge(p2.id,p1.id,6)
+                    relationshipGraph.addEdge(p1.id,p2.id,6)
                 
                 if p2.gender == 'male':
                     relationshipGraph.addEdge(p2.id,p1.id,5)
@@ -111,7 +118,7 @@ class Generator():
                 if p1.gender == 'male':
                     relationshipGraph.addEdge(p1.id,p2.id,7)
                 else:
-                    relationshipGraph.addEdge(p2.id,p1.id,8)
+                    relationshipGraph.addEdge(p1.id,p2.id,8)
                 
                 if p2.gender == 'male':
                     relationshipGraph.addEdge(p2.id,p1.id,7)
