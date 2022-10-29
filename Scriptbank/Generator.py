@@ -46,13 +46,6 @@ class Generator():
         # random relationships father -> son/father -> son from a list of unvisited.
 
 
-
-        # 4 has two duplicate sister connections to 2
-        # 2 has no sister connections to 4
-
-        # same problem for 5 and 1
-
-
         # Makes sure there is a main link between everyone
         for x in range(0,random.randrange(1,4)): # adjust the 2,5 to change how close everyone is.
             vpeople, upeople = [], []
@@ -66,7 +59,6 @@ class Generator():
                 relationshipGraph.addEdge(p1, p2, 0)
                 relationshipGraph.addEdge(p2, p1, 0)
                 vpeople.append(p2)
-                print(p1," <-> ",p2)
                 p1 = p2
                 # this is a list of friends
 
@@ -79,7 +71,13 @@ class Generator():
             p1 = upeople.pop(random.randrange(0,len(upeople)))
             p2 = upeople.pop(random.randrange(0,len(upeople)))
 
+            # you arent checking if the mother / father are the right gender
             r = random.randrange(1,5)
+            if(r == 1 or r == 2):
+                if(p1.gender == 'male'):
+                    r = 1
+                else: r = 2
+                
             if r == 1:
                 # FATHER / CHILD
                 p1.age = p2.age+random.randrange(22,32)
