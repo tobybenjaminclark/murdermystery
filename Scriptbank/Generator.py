@@ -32,7 +32,7 @@ class Generator():
         self.createRooms(r_count)
         self.createPeople(p_count)
         self.distributeItems()
-        e = Event(self)
+        self.e = Event(self)
         
 
         
