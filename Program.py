@@ -18,9 +18,9 @@ class Program():
 
         gui_interface = ig.InterfaceGUI(self)
 
-    
-    def generate(self, r_count, p_count):
+    def generate(self,r_count,p_count):
         self.generator = g.Generator(self, r_count, p_count)
+        
 
 p = Program()
 
