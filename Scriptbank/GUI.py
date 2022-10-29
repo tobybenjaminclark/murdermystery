@@ -1,5 +1,6 @@
 from tkinter import *
 import random
+from turtle import xcor
 
 class GUI():
 
@@ -18,6 +19,7 @@ class GUI():
         self.master = Tk()
         self.parent = parent
         self.logoimg = PhotoImage(file = "Scriptbank/Logo.gif")
+        self.logoimgsmall = PhotoImage(file = "Scriptbank/LogoSmall.gif")
         self.master.geometry("1920x1080")
         self.master.attributes('-fullscreen','true')
         self.master.configure(bg = self.sch[1])
@@ -167,6 +169,120 @@ class GUI():
         del e
         self.parent.submit_data(self)
         
+    def makeTopBar(self):
+        
+        self.top_frame = Frame(self.master,
+        bg = self.sch[1])
+        
+        self.logo = Label(self.top_frame,
+        image = self.logoimgsmall)
+
+        self.exit_button = Button(self.top_frame,
+        text = "Exit1",
+        bg = self.sch[1],
+        highlightbackground=self.sch[1],
+        font = self.sch['bigfont'],
+        width=30,
+        command = lambda e=0:self.Quit(e))
+
+        self.exit_button2 = Button(self.top_frame,
+        text = "Exit2",
+        bg = self.sch[1],
+        highlightbackground=self.sch[1],
+        font = self.sch['bigfont'],
+        width=30,
+        command = lambda e=0:self.Quit(e))
+
+        self.exit_button3 = Button(self.top_frame,
+        text = "Exit3",
+        bg = self.sch[1],
+        highlightbackground=self.sch[1],
+        font = self.sch['bigfont'],
+        width=30,
+        command = lambda e=0:self.Quit(e))
+
+        self.exit_button4 = Button(self.top_frame,
+        text = "Exit4",
+        bg = self.sch[1],
+        highlightbackground=self.sch[1],
+        font = self.sch['bigfont'],
+        width=30,
+        command = lambda e=0:self.Quit(e))
+
+        self.logo.grid(row=0,column=0)
+        self.exit_button.grid(row=0,column=1)
+        self.exit_button2.grid(row=0,column=2)
+        self.exit_button3.grid(row=0,column=3)
+        self.exit_button4.grid(row=0,column=4)    
+
+    def Quit(self,e):
+        self.master.destroy()
+        quit()
+
+    def makeCanvas(self):
+    
+        self.canvasFrame = Frame(self.rightmaster,
+        bg = self.sch[1],
+        width = 600)
+
+        self.canvasFrame2 = Frame(self.canvasFrame,
+        bg = self.sch[1],
+        width = 600)
+        time_buttons = []
+        
+        for x in range(0,5):
+            time_buttons.append(Button(
+                self.canvasFrame2,
+                text = x,
+                font = self.sch['bigfont'],
+                highlightbackground=self.sch[1]
+            ))
+        
+        for x in range(0, len(time_buttons)):
+             time_buttons[x].grid(row=0,column=x,sticky=N+S+E+W)
+        canvascolspan = x
+
+        self.canvas = Canvas(self.canvasFrame,
+        width = 600, height = 500)
+
+        self.canvasFrame2.pack()
+        self.canvas.pack()
+
+    def makeLowerInfoPanel(self):
+        
+        self.lower_infopanel = Frame(self.rightmaster,
+        bg = self.sch[1])
+
+        people_buttons = []
+        for x in range(0,5):
+            people_buttons.append(Button(
+                self.lower_infopanel,
+                text = ("Person"+str(x)),
+                font = self.sch['bigfont'],
+                highlightbackground=self.sch[1]
+            ))
+            people_buttons[x].grid(row=0,column=x)
+        
+        
+        
+        
+    def makeLeftInfoPanel(self):
+        pass
+
+    def display_main(self):
+        self.rightmaster = Frame(self.master,
+        bg = self.sch[1])
+
+        self.makeLowerInfoPanel()
+        self.makeTopBar()
+        self.makeCanvas()
+
+        self.top_frame.pack()
+        self.canvasFrame.pack()
+        self.lower_infopanel.pack()
+        self.rightmaster.pack()
+        
+        self.master.update()
 
     def clear(self):
         for widget in self.master.winfo_children():

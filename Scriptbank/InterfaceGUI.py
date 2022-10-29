@@ -14,3 +14,4 @@ class InterfaceGUI():
         self.program.generate(room_count, people_count)
 
         gui.clear()
+        gui.display_main()
