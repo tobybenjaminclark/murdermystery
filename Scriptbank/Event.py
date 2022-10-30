@@ -256,10 +256,10 @@ class Event():
                     # the murdered person is in the room after they are dead
                     self.bigdict[room.id][time].people.remove(murdered.id)
                     # remove the dead person from the list of people
-        self.murderFakePath(self.killer, self.dead, self.roomKilled, self.timeKilled)
+        #self.murderFakePath(self.killer, self.dead, self.roomKilled, self.timeKilled)
 
 
-    def murderFakePath(self, murderer, murdered, killTime, killRoom):
+    hello = '''def murderFakePath(self, murderer, murdered, killTime, killRoom):
         for room in self.rooms:
             for time in self.timeList:
                 for person in self.people:
@@ -278,20 +278,20 @@ class Event():
                             newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
 
         
-        hello = '''for time in self.timeList:
+        for time in self.timeList:
             newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
             if(time == killTime and newRoom.id == killRoom.id):
                 newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
                 # botched, regenerate the room and hope it isnt the same lol
             self.bigdict[newRoom.id][time].people.append(murderer)
-            # put him in a different room'''
+            # put him in a different room
         
         for time in self.timeList:
             for room in self.rooms:
                 print(time + " " + str(room.id))
                 print("people", self.bigdict[room.id][time].people)
                 print("events", self.bigdict[room.id][time].events) 
-
+'''
 
 
 
