@@ -259,15 +259,15 @@ class GUI():
         currentx = 15
         currenty = 10
         coords = []
-        location_objects = []
-        colordict = {"Bedroom":self.sch[5], "Corridor":"#FFBF00", "Kitchen":"Light Blue", "Lounge":"Orange", "Balcony":"Lime"}
+        self.location_objects = {}
+        self.colordict = {"Bedroom":self.sch[5], "Corridor":"#FFBF00", "Kitchen":"Light Blue", "Lounge":"Orange", "Balcony":"Lime"}
         locations = self.program.generator.rooms
         for l in locations:
             txt = l.roomName
-            foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=colordict[txt.split()[0]])
+            foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.colordict[txt.split()[0]])
             foo2 = self.canvas.create_text(currentx+22,currenty+70,text=txt,font=self.sch['littlefont'])
             self.canvas.tag_bind(foo, '<ButtonPress-1>', lambda e, l2 = l:self.clicked_circle(e, l2))
-            location_objects.append(foo)
+            self.location_objects[l] = [foo,foo2]
             currenty += 95
             if currenty > 450:
                 currenty=10
@@ -280,6 +280,18 @@ class GUI():
     def clicked_circle(self, e, l):
         del e # deleting temporary event data
         print("Clicked ",l.roomName)
+
+        connections = self.program.generator.locationGraph.returnConnections(l.id)
+        for key in self.location_objects:
+
+            if key.id in connections:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width=5)
+            elif key.id == l.id:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width = 10)
+            else:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "black", width=1)
+
+
         self.updateLowerInfoPanel(l)
 
     def makeLowerInfoPanel(self):
@@ -292,6 +304,16 @@ class GUI():
         # Clears all previous data
         for widget in self.lower_infopanel.winfo_children():
             widget.destroy()
+
+        connected = self.program.generator.locationGraph.returnConnections(location.id)
+
+        self.connectedFrame = Frame(self.lower_infopanel, bg = self.sch[1])
+        connected_buttons = []
+        for x in range(0, len(connected)):
+            foo = Button(self.connectedFrame,
+            text = "test")
+            foo.grid(row=0,column=x)
+        self.connectedFrame.pack()
 
         # Writes new data
         RoomName = Label(self.lower_infopanel,
