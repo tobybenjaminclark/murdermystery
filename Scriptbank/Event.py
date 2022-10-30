@@ -85,12 +85,12 @@ class Event():
         for person in self.people:
             # use the location graph to get adjacent nodes
             
-            connections = locationGraph.returnConnections(person.currentRoom)
-            print(connections)
-            newLocationID = connections[random.randint(0, len(connections)-1)]
+            #connections = locationGraph.returnConnections(person.currentRoom)
+            #newLocationID = connections[random.randint(0, len(connections)-1)]
             # got the new id of where to move
-            person.currentRoom = self.rooms[newLocationID].id
-            self.bigdict[newLocationID][time].people.append(person.id)
+            #person.currentRoom = self.rooms[newLocationID].id
+            #self.bigdict[newLocationID][time].people.append(person.id)
+            pass
 
 
 
