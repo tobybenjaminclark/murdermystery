@@ -38,7 +38,10 @@ class Generator():
         self.e = Event(self)
         
 
-        
+    def getLocationFromID(self,id):
+        for x in self.rooms:
+            if(x.id == id):
+                return x        
 
 
     def distributeItems(self):
@@ -65,7 +68,7 @@ class Generator():
 
 
             if(len(chosenRoom.contains) < 2):
-                chosenRoom.contains.append(Item(itemName, index))
+                chosenRoom.contains.append(Item(itemName, index, False))
             
             if(random.random() < 0.2):
                 break
@@ -84,7 +87,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenRoom.contains) < 3):
-                    chosenRoom.contains.append(Item(itemName, index))
+                    chosenRoom.contains.append(Item(itemName, index,True))
                 
                 if(random.random() < 0.2):
                     break
@@ -95,7 +98,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenPerson.contains) < 2):
-                    chosenPerson.contains.append(Item(itemName, index))
+                    chosenPerson.contains.append(Item(itemName, index, True))
                 
                 if(random.random() < 0.2):
                     break

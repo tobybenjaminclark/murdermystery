@@ -86,11 +86,35 @@ class Event():
         for x in range(0, len(topic)):
             topic[x] = topic[x].strip('\t\n')
             topic[x].split('.', 1)[1]
-            topic[x] = topic[x][1:len(topic)]
+            topic[x] = topic[x][3:len(topic)]
+
+            if(topic[x][0] == " "):
+                topic[x] = topic[x][1:len(topic)]
         print(topic)
         
         for time in self.timeList:
             for room in self.rooms:
+
+                
+                movable = []
+                for x in room.contains:
+                    if(x.movable == True):
+                        movable.append(x)
+
+                if(len(movable) > 0):
+                    if(random.random() < 0.3):
+                        people = self.bigdict[room.id][time].people
+                        if(len(people) > 0):
+                            person = self.people[random.randint(0, len(people)-1)]
+                            item = movable[random.randint(0, len(movable)-1)]
+                            person.contains.append(item)
+                            room.contains.remove(item)
+                            self.bigdict[room.id][time].events.append("itemPickedUp(" + str(person.id) + ", " + str(item.id) + ")")
+
+                
+
+
+
                 people = self.bigdict[room.id][time].people
                 if(len(people) > 1): # there are multiple people in the room
                     if(random.random() < 0.3):
@@ -100,8 +124,8 @@ class Event():
                         person2 = self.getPersonFromID(p2)
                         if(not(person1 == person2)):
                             chosenTopic = topic[random.randint(0, len(topic)-1)]
-                            self.bigdict[room.id][time].events.append("conversation(" + str(person1.id) + " , " + str(person2.id) + " , " + chosenTopic + ")")
-                            print(self.bigdict[room.id][time].events)
+                            self.bigdict[room.id][time].events.append("conversation(" + str(person1.id) + ", " + str(person2.id) + ", " + chosenTopic + ")")
+                            self.bigdict[room.id][time].events.append("conversation(" + str(person2.id) + ", " + str(person1.id) + ", " + chosenTopic + ")")
                     
                 # people is id.. get person from id
 
@@ -114,6 +138,14 @@ class Event():
                             person.contains.remove(item)
                             room.contains.append(item)
                             self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + " " + str(item.id) + ")")
+
+
+
+
+                
+                    
+
+
 
                     
 
