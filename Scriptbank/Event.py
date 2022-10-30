@@ -84,12 +84,8 @@ class Event():
         topic = self.topics
         
         for x in range(0, len(topic)):
-            topic[x] = topic[x].strip('\t\n')
-            topic[x].split('.', 1)[1]
-            topic[x] = topic[x][3:len(topic)] 
-
-            if(topic[x][0] == " "):
-                topic[x] = topic[x][1:len(topic)]
+            topic[x].lstrip('0123456789. ')
+            print(topic[x])
 
         # this works
         
@@ -116,7 +112,7 @@ class Event():
                 
                 people = self.bigdict[room.id][time].people
                 if(len(people) > 1): # there are multiple people in the room
-                    if(random.random() < 0.3):
+                    if(random.random() < 0.4):
                         p1 = people[random.randint(0, len(people)-1)]
                         p2 = people[random.randint(0, len(people)-1)]
                         person1 = self.getPersonFromID(p1)
@@ -132,7 +128,7 @@ class Event():
                     person = self.getPersonFromID(p)
                     if(len(person.contains) > 0):
                         # someone has an item
-                        if(random.random() < 0.2):
+                        if(random.random() < 0.3):
                             item = person.contains[random.randint(0, len(person.contains)-1)]
                             person.contains.remove(item)
                             room.contains.append(item)
@@ -210,5 +206,35 @@ class Event():
             murderer = self.people[possibleMurderers[random.randint(0, len(possibleMurderers)-1)]-1]
             print("murderer is", murderer.id)
             murderer.isMurderer = True
+            self.killSomeone(murderer)
+
+    def killSomeone(self, murderer):
+        # use bigDict to find a place to kill someone
+        # make a new dict, which is the actual story
+        
+        # murderer is a person
+
+        for room in self.rooms:
+            for time in self.timeList:
+                if(len(self.bigdict[room.id][time].people) > 1 and murderer.id in self.bigdict[room.id][time].people):
+                        if(len(murderer.contains) > 0):
+                            # murderer is in room with other ppl and contains weapon
+
+
+                            randomVictim = self.bigdict[room.id][time].people[random.randint(0, len(self.bigdict[room.id][time].people)-1)]
+                            if(not(randomVictim == murderer.id)):
+                                # murderer has killed someone
+                                randomVictim = self.getPersonFromID(randomVictim)
+                                randomVictim.isDead = True
+
+                                self.killer = murderer
+                                self.dead = randomVictim
+                                self.roomKilled = room
+                                self.timeKilled = time
+                                print("murderer", murderer.name, "dead", randomVictim.name, "room", room.roomName, "time", time)
+                                return
+
+        
+
 
 
