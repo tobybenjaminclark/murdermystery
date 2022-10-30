@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from time import time
 
 from .EventInstance import EventInstance
@@ -22,6 +23,8 @@ class Event():
         self.initialRooms()
         self.generateEvents()
         self.determineMurderer()
+        
+        
 
 
     def setupEvents(self):
@@ -235,9 +238,51 @@ class Event():
                                 self.roomKilled = room
                                 self.timeKilled = time
                                 print("murderer", murderer.name, "dead", randomVictim.name, "room", room.roomName, "time", time)
+                                self.generateRealGraph(self.killer, self.dead, self.roomKilled, self.timeKilled)
                                 return
 
         
+    def generateRealGraph(self, murderer, murdered, killTime, killRoom):
+        killed = False
+        for room in self.rooms:
+            for time in self.timeList:
+                if(room.id == killRoom and time == killTime):
+                    killed = True
+                    self.bigdict[room.id][time].events.append("murdered( ", murderer, ", ", murdered, ")")
+                    self.people.remove(murdered)
+                    print(self.people.count, "this should be 4")
+                    
+                if(murdered in self.bigdict[room.id][time].people and killed == True):
+                    # the murdered person is in the room after they are dead
+                    self.bigdict[room.id][time].people.remove(murdered.id)
+                    # remove the dead person from the list of people
+        self.murderFakePath(self.killer, self.dead, self.roomKilled, self.timeKilled)
+
+
+    def murderFakePath(self, murderer, murdered, killTime, killRoom):
+        for room in self.rooms:
+            for time in self.timeList:
+                for person in self.people:
+                    if(murderer.id in self.bigdict[room.id][time].people):
+                        print(person.id, murderer.id)
+                        print(self.bigdict[room.id][time].people)
+                        self.bigdict[room.id][time].people.remove(murderer.id)
+                        # remove the murderer from everything
+        
+        for time in self.timeList:
+            newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
+            if(time == killTime and newRoom.id == killRoom.id):
+                newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
+                # botched, regenerate the room and hope it isnt the same lol
+            self.bigdict[newRoom.id][time].people.append(murderer)
+            # put him in a different room
+        
+        for time in self.timeList:
+            for room in self.rooms:
+                print(time + " " + str(room.id))
+                print("people", self.bigdict[room.id][time].people)
+                print("events", self.bigdict[room.id][time].events) 
+
 
 
 
