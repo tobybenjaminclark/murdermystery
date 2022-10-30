@@ -56,7 +56,8 @@ class Generator():
         index = 0
 
         # non movable
-        nmItems = self.roomItems.readlines()
+        nmItems = self.roomItems.readlines() # gets 
+
         for x in range(0, len(nmItems)):
             nmItems[x] = nmItems[x].strip('\t\n')
         
