@@ -17,4 +17,4 @@ class Person:
         self.isMurderer = False # after set random person to true
         self.isDead = False
         self.contains = [] # maybe change this to in event
-        self.currentRoom = ""
+        self.currentRoom = -1

@@ -66,3 +66,7 @@ class LocationGraph():
         for key in self.connections:
             item = self.connections[key]
             print("[",key,"] : ",item)
+
+    def returnConnections(self, node):
+        item = self.connections[node]
+        return item

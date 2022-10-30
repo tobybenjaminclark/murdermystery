@@ -1,4 +1,6 @@
 from time import time
+
+from .EventInstance import EventInstance
 from .Location import Location
 from .Person import Person
 from .RelationshipGraph import RelationshipGraph
@@ -12,8 +14,23 @@ class Event():
         self.gen = gen
         self.people = self.gen.people
         self.rooms = self.gen.rooms
+        self.locationGraph = self.gen.locationGraph
+        self.startTime = '16:00'
         self.generateRoomTimes()
+        self.setupEvents()
         self.initialRooms()
+        
+
+    def setupEvents(self):
+        bigdict = {}
+        for r in self.rooms:
+            bigdict[r.id] = {}
+            for t in self.timeList:
+                e = EventInstance([],[])
+                bigdict[r.id].update({t:e})
+        print(bigdict)
+        self.bigdict = bigdict
+
 
     def generateRoomTimes(self):
 
@@ -41,11 +58,14 @@ class Event():
             lst[x] = lst[x][:-3]
             if(not(int(lst[x].split(':')[0]) < startTime or int(lst[x].split(':')[0]) > endTime)):
                 timeList.append(lst[x])
-        print(timeList)
+        
+        self.timeList = timeList
+
+
 
         # need a list for every room.. could put this in location
 
-        # {room:{time:eventManager, time:eventManager}, room2:{time:[events]. time:[events]}}
+        # {room:{time:[events], time:[events]}, room2:{time:[events]. time:[events]}}
 
 
     def generateEvents(self):
@@ -58,18 +78,52 @@ class Event():
         # person1 must be murderer, person2 isDead = true
         pass
     
-    def moveRooms(self):
+    def moveRooms(self, time):
         # people can move to an adjacent room
         # or stay in the current room
+        locationGraph = LocationGraph()
+        for person in self.people:
+            # use the location graph to get adjacent nodes
+            
+            connections = locationGraph.returnConnections(person.currentRoom)
+            newLocationID = connections[random.randint(0, len(connections)-1)]
+            # got the new id of where to move
+            person.currentRoom = self.rooms[newLocationID].id
+            self.bigdict[newLocationID][time].people.append(person.id)
 
-        pass
 
+
+
+        
     def initialRooms(self):
         # put everyone in a random room
-        for person in self.people:
-            room = self.rooms[random.randint(0, len(self.rooms)-1)]
-            person.currentRoom = room.roomName
-            print(person.name , "is in", room.roomName)
+
+        
+        for time in self.timeList:
+            if(time == self.startTime):
+                for person in self.people:
+                    room = self.rooms[random.randint(0, len(self.rooms)-1)]
+                    person.currentRoom = room.id
+                    print(self.bigdict[room.id][self.startTime])
+                    #self.bigdict[room.id][self.startTime].people.append(person.id)
+            else:
+                self.moveRooms(time)
+            
+        print(self.bigdict)
+
+        
+
+        # need to put people in different rooms in each time interval
+        # started with first time interval, put people in random rooms
+        # then move people to an adjacent room every interval
+        # eventmanager stores the list of people in a room and the list of events that happen
+        # eventmanager doesnt store time or room
+        # {room:{time:eventManager, time:eventManager}, room2:{time:[events]. time:[events]}}
+        
+        
+
+
+
 
 
 

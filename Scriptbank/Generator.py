@@ -214,7 +214,7 @@ class Generator():
 
             else:
                 # person is female
-                name = girls[random.randint(0, 500)]
+                name = girls[random.randint(0, 499)]
                 self.people.append(Person(index, name, random.randint(0,80), 'female'))
 
             index += 1
@@ -295,7 +295,7 @@ class Generator():
             if(random.random() > 0.8):
                 break
 
-        locationGraph.showGraph()
+        self.locationGraph = locationGraph
         
             
 
