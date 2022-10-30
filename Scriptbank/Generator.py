@@ -66,9 +66,9 @@ class Generator():
             itemName = nmItems[random.randint(0, len(nmItems) - 1)]
             index += 1
 
-
             if(len(chosenRoom.contains) < 2):
-                chosenRoom.contains.append(Item(itemName, index, False))
+                chosenRoom.contains.append(Item(index, itemName, False))
+                print("Placed ",itemName,' into ',chosenRoom.roomName)
             
             if(random.random() < 0.2):
                 break
@@ -87,7 +87,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenRoom.contains) < 3):
-                    chosenRoom.contains.append(Item(itemName, index,True))
+                    chosenRoom.contains.append(Item(index, itemName,True))
                 
                 if(random.random() < 0.2):
                     break
@@ -98,7 +98,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenPerson.contains) < 2):
-                    chosenPerson.contains.append(Item(itemName, index, True))
+                    chosenPerson.contains.append(Item(index, itemName, True))
                 
                 if(random.random() < 0.2):
                     break
@@ -117,7 +117,6 @@ class Generator():
 
         # friend -> friend -> friend -> frien
         # random relationships father -> son/father -> son from a list of unvisited.
-
 
         # Makes sure there is a main link between everyone
         for x in range(0,random.randrange(1,4)): # adjust the 2,5 to change how close everyone is.
