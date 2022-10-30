@@ -268,14 +268,19 @@ class Event():
                         print(self.bigdict[room.id][time].people)
                         self.bigdict[room.id][time].people.remove(murderer.id)
                         # remove the murderer from everything
+                        newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
+                        if(time == killTime and newRoom.id == killRoom.id):
+                            newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
+                            # botched, regenerate the room and hope it isnt the same lol
+                        self.bigdict[newRoom.id][time].people.append(murderer)
         
-        for time in self.timeList:
+        hello = '''for time in self.timeList:
             newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
             if(time == killTime and newRoom.id == killRoom.id):
                 newRoom = self.rooms[random.randint(0, len(self.rooms)-1)]
                 # botched, regenerate the room and hope it isnt the same lol
             self.bigdict[newRoom.id][time].people.append(murderer)
-            # put him in a different room
+            # put him in a different room'''
         
         for time in self.timeList:
             for room in self.rooms:
