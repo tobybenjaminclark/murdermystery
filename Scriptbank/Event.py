@@ -82,6 +82,7 @@ class Event():
         possibleEvents = ["conversation", "itemDropped", "itemPickedUp", "wasMurdered"]
 
         topic = self.topics.readlines()
+        
         for x in range(0, len(topic)):
             topic[x] = topic[x].strip('\t\n')
             topic[x].split('.', 1)[1]
@@ -199,7 +200,7 @@ class Event():
                             possibleMurderers.append(person.id)
         if(len(possibleMurderers) == 0):
             print("regenerating")
-            self.gen.parent.generate()
+            self.gen.parent.generate(self.gen.rcount, self.gen.pcount)
             
         murderer = self.people[possibleMurderers[random.randint(0, len(possibleMurderers)-1)]]
         murderer.isMurderer = True

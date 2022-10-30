@@ -33,8 +33,12 @@ class Generator():
         self.topics = parent.topics
         self.createRooms(r_count)
         self.createPeople(p_count)
+        self.parent = parent
+        self.rcount = r_count
+        self.pcount = p_count
         
         self.distributeItems()
+        
         self.e = Event(self)
         
 
