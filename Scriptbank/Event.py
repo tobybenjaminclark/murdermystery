@@ -134,8 +134,10 @@ class Event():
                             person.contains.remove(item)
                             room.contains.append(item)
                             self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.name) + ")")
-            for item in room.contains:
-                self.bigdict[room.id][time].roomContains.append(item.name)
+
+                for item in room.contains:
+                        self.bigdict[room.id][time].roomContains.append(item.name)
+
             
 
         for time in self.timeList:
@@ -148,7 +150,7 @@ class Event():
                     p = self.getPersonFromID(p)
                     for item in p.contains:
                         print(p.id, "holds", item.name)
-                
+        
     def moveRooms(self, time):
         # people can move to an adjacent room
         # or stay in the current room
