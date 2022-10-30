@@ -18,6 +18,7 @@ class GUI():
         
         self.master = Tk()
         self.parent = parent
+        self.program = parent.program
         self.logoimg = PhotoImage(file = "Scriptbank/Logo.gif")
         self.logoimgsmall = PhotoImage(file = "Scriptbank/LogoSmall.gif")
         self.master.geometry("1920x1080")
@@ -222,12 +223,11 @@ class GUI():
     def makeCanvas(self):
     
         self.canvasFrame = Frame(self.rightmaster,
-        bg = self.sch[1],
-        width = 600)
+        bg = self.sch[1])
 
         self.canvasFrame2 = Frame(self.canvasFrame,
-        bg = self.sch[1],
-        width = 600)
+        bg = self.sch[1])
+
         time_buttons = []
         
         for x in range(0,5):
@@ -239,11 +239,26 @@ class GUI():
             ))
         
         for x in range(0, len(time_buttons)):
-             time_buttons[x].grid(row=0,column=x,sticky=N+S+E+W)
+             time_buttons[x].grid(row=0,column=x)
         canvascolspan = x
 
         self.canvas = Canvas(self.canvasFrame,
         width = 600, height = 500)
+
+        # filling canvas with locations
+        currentx = 10
+        currenty = 10
+        coords = []
+        location_objects = []
+        locations = self.program.generator.rooms
+        for l in locations:
+            txt = l.roomName + " " + str(l.id)
+            foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.sch[5])
+            location_objects.append(foo)
+            currenty += 55
+            if currenty > (55*8)+10:
+                currenty=10
+                currentx+=55
 
         self.canvasFrame2.pack()
         self.canvas.pack()
@@ -263,24 +278,34 @@ class GUI():
             ))
             people_buttons[x].grid(row=0,column=x)
         
-        
-        
-        
     def makeLeftInfoPanel(self):
-        pass
+        self.leftinfoframe = Frame(self.master,
+        bg = self.sch[1])
+
+        self.infolabel = Label(self.leftinfoframe,
+        text = "Name: Fuck\nOccupation:Imposter",
+        font = self.sch['bigfont'],
+        bg = self.sch[1],
+        fg = self.sch[3])
+        self.infolabel.pack()
+
+
 
     def display_main(self):
+
         self.rightmaster = Frame(self.master,
         bg = self.sch[1])
 
         self.makeLowerInfoPanel()
         self.makeTopBar()
         self.makeCanvas()
+        self.makeLeftInfoPanel()
 
-        self.top_frame.pack()
+        self.top_frame.grid(row=0,column=0,columnspan=2)
         self.canvasFrame.pack()
         self.lower_infopanel.pack()
-        self.rightmaster.pack()
+        self.rightmaster.grid(row=1,column=1)
+        self.leftinfoframe.grid(row=1,column=0 )
 
         self.master.update()
 
