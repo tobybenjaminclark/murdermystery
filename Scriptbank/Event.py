@@ -84,7 +84,8 @@ class Event():
         topic = self.topics
         
         for x in range(0, len(topic)):
-            topic[x].lstrip('0123456789. ')
+            topic[x] = topic[x].lstrip('0123456789. ')
+            topic[x] = topic[x].strip('\t\n')
             print(topic[x])
 
         # this works
