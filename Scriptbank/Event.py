@@ -21,7 +21,6 @@ class Event():
         self.setupEvents()
         self.initialRooms()
         self.generateEvents()
-        
 
     def setupEvents(self):
         bigdict = {}
@@ -31,7 +30,6 @@ class Event():
                 e = EventInstance([],[])
                 bigdict[r.id].update({t:e})
         self.bigdict = bigdict
-
 
     def generateRoomTimes(self):
 
@@ -62,7 +60,6 @@ class Event():
         
         self.timeList = timeList
 
-
         # need a list for every room.. could put this in location
 
         # {room:{time:[events], time:[events]}, room2:{time:[events]. time:[events]}}
@@ -86,7 +83,7 @@ class Event():
         for x in range(0, len(topic)):
             topic[x] = topic[x].strip('\t\n')
             topic[x].split('.', 1)[1]
-            topic[x] = topic[x][3:len(topic)]
+            topic[x] = topic[x][3:len(topic)] 
 
             if(topic[x][0] == " "):
                 topic[x] = topic[x][1:len(topic)]
@@ -95,27 +92,25 @@ class Event():
         for time in self.timeList:
             for room in self.rooms:
 
-                
                 movable = []
-                for x in room.contains:
-                    if(x.movable == True):
-                        movable.append(x)
-                        print(x)
+
+                for item in room.contains:
+                    if(item.movable == True):
+                        movable.append(item)
+                        print(room.roomName,time,item.name)
+                    else:
+                        pass
 
                 if(len(movable) > 0):
-                    if(random.random() < 0.3):
+                    if(random.random() < 0.5):
                         ppl = self.bigdict[room.id][time].people
-                        if(len(people) > 0):
+                        if(len(ppl) > 0):
                             person = self.people[random.randint(0, len(ppl)-1)]
                             item = movable[random.randint(0, len(movable)-1)]
                             person.contains.append(item)
                             room.contains.remove(item)
                             self.bigdict[room.id][time].events.append("itemPickedUp(" + str(person.id) + ", " + str(item.id) + ")")
-
                 
-
-
-
                 people = self.bigdict[room.id][time].people
                 if(len(people) > 1): # there are multiple people in the room
                     if(random.random() < 0.3):
@@ -135,12 +130,10 @@ class Event():
                     if(len(person.contains) > 0):
                         # someone has an item
                         if(random.random() < 0.2):
-                            item = person.contains[random.randint(0, len(person.contains) - 1)]
+                            item = person.contains[random.randint(0, len(person.contains)-1)]
                             person.contains.remove(item)
                             room.contains.append(item)
                             self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.id) + ")")
-
-
 
         for time in self.timeList:
             for room in self.rooms:
@@ -148,15 +141,6 @@ class Event():
                 print(self.bigdict[room.id][time].people)
                 print(self.bigdict[room.id][time].events) 
                 
-                    
-
-
-
-                    
-
-
-
-    
     def moveRooms(self, time):
         # people can move to an adjacent room
         # or stay in the current room
@@ -173,16 +157,9 @@ class Event():
             else:
                 self.bigdict[person.currentRoom][time].people.append(person.id)
                 
-
-             
-
-
-
-        
     def initialRooms(self):
         # put everyone in a random room
 
-        
         for time in self.timeList:
             print(time, self.startTime)
             if(time == self.startTime):
@@ -192,8 +169,6 @@ class Event():
                     self.bigdict[room.id][self.startTime].people.append(person.id)
             else:
                 self.moveRooms(time)
-            
-        
 
         # need to put people in different rooms in each time interval
         # started with first time interval, put people in random rooms
@@ -201,15 +176,6 @@ class Event():
         # eventmanager stores the list of people in a room and the list of events that happen
         # eventmanager doesnt store time or room
         # {room:{time:eventManager, time:eventManager}, room2:{time:[events]. time:[events]}}
-        
-        
-
-
-
-
-
-
-
 
 # the events of all rooms at different times will be generated here
 

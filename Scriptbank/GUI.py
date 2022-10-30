@@ -1,6 +1,6 @@
 from tkinter import *
 import random
-from turtle import xcor
+from turtle import color, xcor
 import re
 
 class GUI():
@@ -247,7 +247,8 @@ class GUI():
         self.canvasframe3=Frame(self.canvasFrame,width=((((len(self.program.generator.rooms))//5)*95)+30),height=500)
         self.canvasframe3.pack()
         self.canvas = Canvas(self.canvasframe3,
-        width = 600, height = 500,scrollregion=(0,0,((((len(self.program.generator.rooms))//5)*95)+30),500))
+        width = 600, height = 500,scrollregion=(0,0,((((len(self.program.generator.rooms))//5)*95)+30),500),
+        bg = self.sch[1])
         self.hbar=Scrollbar(self.canvasframe3,orient=HORIZONTAL)
         self.hbar.pack(side=BOTTOM,fill=X)
         self.hbar.config(command=self.canvas.xview)
@@ -260,7 +261,7 @@ class GUI():
         currenty = 10
         coords = []
         self.location_objects = {}
-        self.colordict = {"Bedroom":self.sch[5], "Corridor":"#FFBF00", "Kitchen":"Light Blue", "Lounge":"Orange", "Balcony":"Lime"}
+        self.colordict = {"Bedroom":"Light Grey", "Corridor":"#FFBF00", "Kitchen":"Light Blue", "Lounge":"Orange", "Balcony":"Lime"}
         locations = self.program.generator.rooms
         for l in locations:
             txt = l.roomName
@@ -287,7 +288,7 @@ class GUI():
             if key.id in connections:
                 self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width=5)
             elif key.id == l.id:
-                self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width = 10)
+                self.canvas.itemconfig(self.location_objects[key][0], outline = self.sch[5], width = 10)
             else:
                 self.canvas.itemconfig(self.location_objects[key][0], outline = "black", width=1)
 
@@ -310,10 +311,13 @@ class GUI():
         self.connectedFrame = Frame(self.lower_infopanel, bg = self.sch[1])
         connected_buttons = []
         for x in range(0, len(connected)):
+            id = connected[x]
+            locationc = self.program.generator.getLocationFromID(id)
             foo = Button(self.connectedFrame,
-            text = "test")
+            text = locationc.roomName,
+            command = lambda e = 0, l = locationc:self.clicked_circle(e,l))
             foo.grid(row=0,column=x)
-        self.connectedFrame.pack()
+        
 
         # Writes new data
         RoomName = Label(self.lower_infopanel,
@@ -322,7 +326,9 @@ class GUI():
         fg = self.sch[3],
         bg = self.sch[1])
         RoomName.pack()
+        
         self.lower_infopanel.update()
+        self.connectedFrame.pack()
 
         
     def makeLeftInfoPanel(self):
