@@ -63,7 +63,6 @@ class Generator():
         while(True):
             chosenRoom = self.rooms[random.randint(0, len(self.rooms) - 1)]
             itemName = nmItems[random.randint(0, len(nmItems) - 1)]
-            itemID = index
             index += 1
 
 

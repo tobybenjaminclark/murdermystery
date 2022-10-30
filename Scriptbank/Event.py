@@ -100,12 +100,13 @@ class Event():
                 for x in room.contains:
                     if(x.movable == True):
                         movable.append(x)
+                        print(x)
 
                 if(len(movable) > 0):
                     if(random.random() < 0.3):
-                        people = self.bigdict[room.id][time].people
+                        ppl = self.bigdict[room.id][time].people
                         if(len(people) > 0):
-                            person = self.people[random.randint(0, len(people)-1)]
+                            person = self.people[random.randint(0, len(ppl)-1)]
                             item = movable[random.randint(0, len(movable)-1)]
                             person.contains.append(item)
                             room.contains.remove(item)
@@ -137,11 +138,15 @@ class Event():
                             item = person.contains[random.randint(0, len(person.contains) - 1)]
                             person.contains.remove(item)
                             room.contains.append(item)
-                            self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + " " + str(item.id) + ")")
+                            self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.id) + ")")
 
 
 
-
+        for time in self.timeList:
+            for room in self.rooms:
+                print(time + " " + str(room.id))
+                print(self.bigdict[room.id][time].people)
+                print(self.bigdict[room.id][time].events) 
                 
                     
 
