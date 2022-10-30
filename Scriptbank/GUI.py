@@ -254,6 +254,7 @@ class GUI():
         for l in locations:
             txt = l.roomName + " " + str(l.id)
             foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.sch[5])
+            foo2 = self.canvas.create_text(currentx+((55-10)//22),currenty+((55-10)//2),text=txt)
             location_objects.append(foo)
             currenty += 55
             if currenty > (55*8)+10:
