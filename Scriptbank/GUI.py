@@ -1,6 +1,7 @@
 from tkinter import *
 import random
 from turtle import xcor
+import re
 
 class GUI():
 
@@ -242,42 +243,87 @@ class GUI():
              time_buttons[x].grid(row=0,column=x)
         canvascolspan = x
 
-        self.canvas = Canvas(self.canvasFrame,
-        width = 600, height = 500)
+        # scrollable canvas
+        self.canvasframe3=Frame(self.canvasFrame,width=((((len(self.program.generator.rooms))//5)*95)+30),height=500)
+        self.canvasframe3.pack()
+        self.canvas = Canvas(self.canvasframe3,
+        width = 600, height = 500,scrollregion=(0,0,((((len(self.program.generator.rooms))//5)*95)+30),500))
+        self.hbar=Scrollbar(self.canvasframe3,orient=HORIZONTAL)
+        self.hbar.pack(side=BOTTOM,fill=X)
+        self.hbar.config(command=self.canvas.xview)
+        self.canvas.config(width=600,height=500)
+        self.canvas.config(xscrollcommand=self.hbar.set)
+        self.canvas.pack(side=LEFT,expand=True,fill=BOTH)
 
         # filling canvas with locations
-        currentx = 10
+        currentx = 15
         currenty = 10
         coords = []
-        location_objects = []
+        self.location_objects = {}
+        self.colordict = {"Bedroom":self.sch[5], "Corridor":"#FFBF00", "Kitchen":"Light Blue", "Lounge":"Orange", "Balcony":"Lime"}
         locations = self.program.generator.rooms
         for l in locations:
-            txt = l.roomName + " " + str(l.id)
-            foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.sch[5])
-            foo2 = self.canvas.create_text(currentx+((55-10)//22),currenty+((55-10)//2),text=txt)
-            location_objects.append(foo)
-            currenty += 55
-            if currenty > (55*8)+10:
+            txt = l.roomName
+            foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.colordict[txt.split()[0]])
+            foo2 = self.canvas.create_text(currentx+22,currenty+70,text=txt,font=self.sch['littlefont'])
+            self.canvas.tag_bind(foo, '<ButtonPress-1>', lambda e, l2 = l:self.clicked_circle(e, l2))
+            self.location_objects[l] = [foo,foo2]
+            currenty += 95
+            if currenty > 450:
                 currenty=10
-                currentx+=55
+                currentx+=65
 
         self.canvasFrame2.pack()
+        self.canvasframe3.pack()
         self.canvas.pack()
+
+    def clicked_circle(self, e, l):
+        del e # deleting temporary event data
+        print("Clicked ",l.roomName)
+
+        connections = self.program.generator.locationGraph.returnConnections(l.id)
+        for key in self.location_objects:
+
+            if key.id in connections:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width=5)
+            elif key.id == l.id:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "white", width = 10)
+            else:
+                self.canvas.itemconfig(self.location_objects[key][0], outline = "black", width=1)
+
+
+        self.updateLowerInfoPanel(l)
 
     def makeLowerInfoPanel(self):
         
         self.lower_infopanel = Frame(self.rightmaster,
         bg = self.sch[1])
 
-        people_buttons = []
-        for x in range(0,5):
-            people_buttons.append(Button(
-                self.lower_infopanel,
-                text = ("Person"+str(x)),
-                font = self.sch['bigfont'],
-                highlightbackground=self.sch[1]
-            ))
-            people_buttons[x].grid(row=0,column=x)
+    def updateLowerInfoPanel(self, location):
+
+        # Clears all previous data
+        for widget in self.lower_infopanel.winfo_children():
+            widget.destroy()
+
+        connected = self.program.generator.locationGraph.returnConnections(location.id)
+
+        self.connectedFrame = Frame(self.lower_infopanel, bg = self.sch[1])
+        connected_buttons = []
+        for x in range(0, len(connected)):
+            foo = Button(self.connectedFrame,
+            text = "test")
+            foo.grid(row=0,column=x)
+        self.connectedFrame.pack()
+
+        # Writes new data
+        RoomName = Label(self.lower_infopanel,
+        text = location.roomName,
+        font = self.sch['bigfont'],
+        fg = self.sch[3],
+        bg = self.sch[1])
+        RoomName.pack()
+        self.lower_infopanel.update()
+
         
     def makeLeftInfoPanel(self):
         self.leftinfoframe = Frame(self.master,
@@ -289,8 +335,6 @@ class GUI():
         bg = self.sch[1],
         fg = self.sch[3])
         self.infolabel.pack()
-
-
 
     def display_main(self):
 

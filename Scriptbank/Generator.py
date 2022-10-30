@@ -243,7 +243,7 @@ class Generator():
         # make every room a node in the graph
         locationGraph = LocationGraph()
 
-        possibleRooms = ["Bedroom ", "Dining Hall ", "Corridor ", "Kitchen ", "Living Room ", "Balcony "]
+        possibleRooms = ["Bedroom ", "Corridor ", "Kitchen ", "Lounge ", "Balcony "]
 
         count = 0
         self.rooms = []
