@@ -16,9 +16,11 @@ class Event():
         self.rooms = self.gen.rooms
         self.locationGraph = self.gen.locationGraph
         self.startTime = '16:00'
+        self.topics = self.gen.topics
         self.generateRoomTimes()
         self.setupEvents()
         self.initialRooms()
+        self.generateEvents()
         
 
     def setupEvents(self):
@@ -28,7 +30,6 @@ class Event():
             for t in self.timeList:
                 e = EventInstance([],[])
                 bigdict[r.id].update({t:e})
-        print(bigdict)
         self.bigdict = bigdict
 
 
@@ -62,11 +63,14 @@ class Event():
         self.timeList = timeList
 
 
-
         # need a list for every room.. could put this in location
 
         # {room:{time:[events], time:[events]}, room2:{time:[events]. time:[events]}}
 
+    def getPersonFromID(self,id):
+        for x in self.people:
+            if(x.id == id):
+                return x
 
     def generateEvents(self):
         # events can happen:
@@ -76,7 +80,45 @@ class Event():
 
         # wasMurdered(person1 (murderer), person2 (murdered))
         # person1 must be murderer, person2 isDead = true
-        pass
+        possibleEvents = ["conversation", "itemDropped", "itemPickedUp", "wasMurdered"]
+
+        topic = self.topics.readlines()
+        for x in range(0, len(topic)):
+            topic[x] = topic[x].strip('\t\n')
+            topic[x].split('.', 1)[1]
+            topic[x] = topic[x][1:len(topic)]
+        print(topic)
+        
+        for time in self.timeList:
+            for room in self.rooms:
+                people = self.bigdict[room.id][time].people
+                if(len(people) > 1): # there are multiple people in the room
+                    if(random.random() < 0.3):
+                        p1 = people[random.randint(0, len(people)-1)]
+                        p2 = people[random.randint(0, len(people)-1)]
+                        person1 = self.getPersonFromID(p1)
+                        person2 = self.getPersonFromID(p2)
+                        if(not(person1 == person2)):
+                            chosenTopic = topic[random.randint(0, len(topic)-1)]
+                            self.bigdict[room.id][time].events.append("conversation(" + str(person1.id) + " , " + str(person2.id) + " , " + chosenTopic + ")")
+                            print(self.bigdict[room.id][time].events)
+                    
+                # people is id.. get person from id
+
+                for p in people:
+                    person = self.getPersonFromID(p)
+                    if(len(person.contains) > 0):
+                        # someone has an item
+                        if(random.random() < 0.2):
+                            item = person.contains[random.randint(0, len(person.contains) - 1)]
+                            person.contains.remove(item)
+                            room.contains.append(item)
+                            self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + " " + str(item.id) + ")")
+
+                    
+
+
+
     
     def moveRooms(self, time):
         # people can move to an adjacent room
@@ -84,14 +126,18 @@ class Event():
         locationGraph = self.gen.locationGraph
         for person in self.people:
             # use the location graph to get adjacent nodes
-            
-            #connections = locationGraph.returnConnections(person.currentRoom)
-            #newLocationID = connections[random.randint(0, len(connections)-1)]
-            # got the new id of where to move
-            #person.currentRoom = self.rooms[newLocationID].id
-            #self.bigdict[newLocationID][time].people.append(person.id)
-            pass
 
+            if(random.random() > 0.7):
+                connections = locationGraph.returnConnections(person.currentRoom)
+                newLocationID = connections[random.randint(0, len(connections)-1)]
+                # got the new id of where to move
+                person.currentRoom = self.rooms[newLocationID].id
+                self.bigdict[newLocationID][time].people.append(person.id)
+            else:
+                self.bigdict[person.currentRoom][time].people.append(person.id)
+                
+
+             
 
 
 
@@ -101,17 +147,15 @@ class Event():
 
         
         for time in self.timeList:
+            print(time, self.startTime)
             if(time == self.startTime):
                 for person in self.people:
                     room = self.rooms[random.randint(0, len(self.rooms)-1)]
                     person.currentRoom = room.id
-                    print(self.bigdict[room.id][self.startTime])
-                    #self.bigdict[room.id][self.startTime].people.append(person.id)
+                    self.bigdict[room.id][self.startTime].people.append(person.id)
             else:
                 self.moveRooms(time)
             
-        print(self.bigdict)
-
         
 
         # need to put people in different rooms in each time interval

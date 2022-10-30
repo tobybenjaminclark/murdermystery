@@ -17,6 +17,7 @@ from .LocationGraph import LocationGraph
 from .Location import Location
 from .Person import Person
 from .Event import Event
+from .Item import Item
 import random
 
 
@@ -29,6 +30,7 @@ class Generator():
         self.boysNames = parent.boysNames
         self.surnames = parent.surnames
         self.adjectives = parent.adjectives
+        self.topics = parent.topics
         self.createRooms(r_count)
         self.createPeople(p_count)
         
@@ -48,6 +50,8 @@ class Generator():
             # can belong to room
             # max 2 per room
 
+        index = 0
+
         # non movable
         nmItems = self.roomItems.readlines()
         for x in range(0, len(nmItems)):
@@ -55,10 +59,13 @@ class Generator():
         
         while(True):
             chosenRoom = self.rooms[random.randint(0, len(self.rooms) - 1)]
-            item = nmItems[random.randint(0, len(nmItems) - 1)]
+            itemName = nmItems[random.randint(0, len(nmItems) - 1)]
+            itemID = index
+            index += 1
+
 
             if(len(chosenRoom.contains) < 2):
-                chosenRoom.contains.append(item)
+                chosenRoom.contains.append(Item(itemName, index))
             
             if(random.random() < 0.2):
                 break
@@ -77,7 +84,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenRoom.contains) < 3):
-                    chosenRoom.contains.append(item)
+                    chosenRoom.contains.append(Item(itemName, index))
                 
                 if(random.random() < 0.2):
                     break
@@ -88,7 +95,7 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenPerson.contains) < 2):
-                    chosenPerson.contains.append(item)
+                    chosenPerson.contains.append(Item(itemName, index))
                 
                 if(random.random() < 0.2):
                     break
@@ -235,7 +242,7 @@ class Generator():
 
         possibleRooms = ["Bedroom ", "Dining Hall ", "Corridor ", "Kitchen ", "Living Room ", "Balcony "]
 
-        count = 1
+        count = 0
         self.rooms = []
         roomAmounts = { }
 
