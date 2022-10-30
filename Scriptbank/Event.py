@@ -81,7 +81,7 @@ class Event():
     def moveRooms(self, time):
         # people can move to an adjacent room
         # or stay in the current room
-        locationGraph = LocationGraph()
+        locationGraph = self.gen.locationGraph
         for person in self.people:
             # use the location graph to get adjacent nodes
             
