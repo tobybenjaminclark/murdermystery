@@ -23,6 +23,7 @@ class Event():
         self.generateEvents()
         self.determineMurderer()
 
+
     def setupEvents(self):
         bigdict = {}
         for r in self.rooms:
