@@ -29,7 +29,7 @@ class Event():
         for r in self.rooms:
             bigdict[r.id] = {}
             for t in self.timeList:
-                e = EventInstance([],[])
+                e = EventInstance([],[],[])
                 bigdict[r.id].update({t:e})
         self.bigdict = bigdict
 
@@ -81,7 +81,7 @@ class Event():
         # person1 must be murderer, person2 isDead = true
         possibleEvents = ["conversation", "itemDropped", "itemPickedUp", "wasMurdered"]
 
-        topic = self.topics.readlines()
+        topic = self.topics
         
         for x in range(0, len(topic)):
             topic[x] = topic[x].strip('\t\n')
@@ -137,12 +137,16 @@ class Event():
                             person.contains.remove(item)
                             room.contains.append(item)
                             self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.name) + ")")
+            for item in room.contains:
+                self.bigdict[room.id][time].roomContains.append(item.name)
+            
 
         for time in self.timeList:
             for room in self.rooms:
                 print(time + " " + str(room.id))
                 print("people", self.bigdict[room.id][time].people)
                 print("events", self.bigdict[room.id][time].events) 
+                print("room contains", self.bigdict[room.id][time].roomContains)
                 for p in self.bigdict[room.id][time].people:
                     p = self.getPersonFromID(p)
                     for item in p.contains:
@@ -198,11 +202,13 @@ class Event():
                         if(len(person.contains) > 0):
                             # contains a murder weapon
                             possibleMurderers.append(person.id)
+        print(possibleMurderers)
         if(len(possibleMurderers) == 0):
             print("regenerating")
             self.gen.parent.generate(self.gen.rcount, self.gen.pcount)
-            
-        murderer = self.people[possibleMurderers[random.randint(0, len(possibleMurderers)-1)]]
-        murderer.isMurderer = True
+        else:
+            murderer = self.people[possibleMurderers[random.randint(0, len(possibleMurderers)-1)]-1]
+            print("murderer is", murderer.id)
+            murderer.isMurderer = True
 
 

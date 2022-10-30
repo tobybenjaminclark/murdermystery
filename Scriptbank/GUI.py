@@ -223,7 +223,6 @@ class GUI():
         quit()
 
     def change_time(self, e, t):
-        print("LOL : ",t)
         for but in self.time_buttons:
             if but.cget('text') == t:
                 but.config(fg = self.sch[5])
@@ -353,7 +352,6 @@ class GUI():
         RoomName.pack()
 
         eventi = self.program.generator.e.bigdict[location.id][self.currenttime]
-        print("Eventnstance : ",eventi.people)
         
         self.lower_infopanel.update()
         self.connectedFrame.pack()

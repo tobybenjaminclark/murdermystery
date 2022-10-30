@@ -24,13 +24,11 @@ import random
 class Generator():
 
     def __init__(self, parent, r_count, p_count):
-        self.roomItems = parent.roomItems
-        self.holdableItems = parent.holdableItems
-        self.girlsNames = parent.girlsNames
-        self.boysNames = parent.boysNames
-        self.surnames = parent.surnames
-        self.adjectives = parent.adjectives
-        self.topics = parent.topics
+        self.roomItems = parent.roomItemsArr # closed
+        self.holdableItems = parent.holdableItemsArr # closed
+        self.girlsNames = parent.girlsNamesArr # closed
+        self.boysNames = parent.boysNamesArr # closed
+        self.topics = parent.topicsArr # closed
         self.createRooms(r_count)
         self.createPeople(p_count)
         self.parent = parent
@@ -60,7 +58,7 @@ class Generator():
         index = 0
 
         # non movable
-        nmItems = self.roomItems.readlines() # gets 
+        nmItems = self.roomItems
 
         for x in range(0, len(nmItems)):
             nmItems[x] = nmItems[x].strip('\t\n')
@@ -79,7 +77,7 @@ class Generator():
             
 
 
-        mItems = self.holdableItems.readlines()
+        mItems = self.holdableItems
         for x in range(0, len(mItems)-1):
             mItems[x] = mItems[x].strip('\t\n')
         
@@ -208,11 +206,11 @@ class Generator():
         if(peopleCount == -1):
             peopleCount = random.randint(5,50)
 
-        boys = self.boysNames.readlines()
+        boys = self.boysNames
         for x in range(0, len(boys)):
             boys[x] = boys[x].strip('\t\n')
 
-        girls = self.girlsNames.readlines()
+        girls = self.girlsNames
         for x in range(0, len(girls)):
             girls[x] = girls[x].strip('\t\n')
 

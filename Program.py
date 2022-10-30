@@ -8,13 +8,20 @@ class Program():
     def __init__(self):
 
         self.girlsNames = open('Databank/girlsNames.txt')
+        self.girlsNamesArr = self.girlsNames.readlines()
+        self.girlsNames.close()
         self.boysNames = open('Databank/boysNames.txt')
-        self.adjectives = open('Databank/adjectives.txt') 
+        self.boysNamesArr = self.boysNames.readlines()
+        self.boysNames.close()
         self.holdableItems = open('Databank/holdableItems.txt')
+        self.holdableItemsArr = self.holdableItems.readlines()
+        self.holdableItems.close()
         self.roomItems = open('Databank/roomItems.txt')
-        self.surnames = open('Databank/surnames.txt')
-        self.occupations = open('Databank/occupations.txt')
+        self.roomItemsArr = self.roomItems.readlines()
+        self.roomItems.close()
         self.topics = open('Databank/topics.txt')
+        self.topicsArr = self.topics.readlines()
+        self.topics.close()
 
         gui_interface = ig.InterfaceGUI(self)
         #self.generator = g.Generator(self, 5, 5)
