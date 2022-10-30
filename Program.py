@@ -9,7 +9,7 @@ class Program():
 
         self.girlsNames = open('Databank/girlsNames.txt')
         self.boysNames = open('Databank/boysNames.txt')
-        self.adjectives = open('Databank/adjectives.txt')
+        self.adjectives = open('Databank/adjectives.txt') 
         self.holdableItems = open('Databank/holdableItems.txt')
         self.roomItems = open('Databank/roomItems.txt')
         self.surnames = open('Databank/surnames.txt')

@@ -68,10 +68,11 @@ class Generator():
 
             if(len(chosenRoom.contains) < 2):
                 chosenRoom.contains.append(Item(index, itemName, False))
-                print("Placed ",itemName,' into ',chosenRoom.roomName)
+                print("Placed ",itemName,' into ',chosenRoom.roomName, "not movable")
             
             if(random.random() < 0.2):
                 break
+            
 
 
         mItems = self.holdableItems.readlines()
@@ -87,7 +88,8 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenRoom.contains) < 3):
-                    chosenRoom.contains.append(Item(index, itemName,True))
+                    chosenRoom.contains.append(Item(index, item,True))
+                    print("Placed ",item,' into ',chosenRoom.roomName, "movable")
                 
                 if(random.random() < 0.2):
                     break
@@ -98,7 +100,8 @@ class Generator():
                 item = mItems[random.randint(0, len(mItems) - 1)]
 
                 if(len(chosenPerson.contains) < 2):
-                    chosenPerson.contains.append(Item(index, itemName, True))
+                    chosenPerson.contains.append(Item(index, item, True))
+                    print("Placed ",item,' into ',chosenRoom.roomName, "movable")
                 
                 if(random.random() < 0.2):
                     break

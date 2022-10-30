@@ -21,6 +21,7 @@ class Event():
         self.setupEvents()
         self.initialRooms()
         self.generateEvents()
+        self.determineMurderer()
 
     def setupEvents(self):
         bigdict = {}
@@ -87,29 +88,29 @@ class Event():
 
             if(topic[x][0] == " "):
                 topic[x] = topic[x][1:len(topic)]
-        print(topic)
+
+        # this works
         
-        for time in self.timeList:
-            for room in self.rooms:
+        for room in self.rooms:
+            for time in self.timeList:
 
                 movable = []
 
+                
                 for item in room.contains:
                     if(item.movable == True):
                         movable.append(item)
-                        print(room.roomName,time,item.name)
-                    else:
-                        pass
 
                 if(len(movable) > 0):
                     if(random.random() < 0.5):
                         ppl = self.bigdict[room.id][time].people
                         if(len(ppl) > 0):
-                            person = self.people[random.randint(0, len(ppl)-1)]
+                            p = ppl[random.randint(0, len(ppl)-1)]
+                            person = self.getPersonFromID(p)
                             item = movable[random.randint(0, len(movable)-1)]
                             person.contains.append(item)
                             room.contains.remove(item)
-                            self.bigdict[room.id][time].events.append("itemPickedUp(" + str(person.id) + ", " + str(item.id) + ")")
+                            self.bigdict[room.id][time].events.append("itemPickedUp(" + str(person.id) + ", " + str(item.name) + ")")
                 
                 people = self.bigdict[room.id][time].people
                 if(len(people) > 1): # there are multiple people in the room
@@ -133,13 +134,17 @@ class Event():
                             item = person.contains[random.randint(0, len(person.contains)-1)]
                             person.contains.remove(item)
                             room.contains.append(item)
-                            self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.id) + ")")
+                            self.bigdict[room.id][time].events.append("itemDropped(" + str(person.id) + ", " + str(item.name) + ")")
 
         for time in self.timeList:
             for room in self.rooms:
                 print(time + " " + str(room.id))
-                print(self.bigdict[room.id][time].people)
-                print(self.bigdict[room.id][time].events) 
+                print("people", self.bigdict[room.id][time].people)
+                print("events", self.bigdict[room.id][time].events) 
+                for p in self.bigdict[room.id][time].people:
+                    p = self.getPersonFromID(p)
+                    for item in p.contains:
+                        print(p.id, "holds", item.name)
                 
     def moveRooms(self, time):
         # people can move to an adjacent room
@@ -178,5 +183,24 @@ class Event():
         # {room:{time:eventManager, time:eventManager}, room2:{time:[events]. time:[events]}}
 
 # the events of all rooms at different times will be generated here
+
+    def determineMurderer(self):
+        # the murderer must have a weapon or be on a balcony
+        # the murderer must be with another person
+        possibleMurderers = []
+        for room in self.rooms:
+            for time in self.timeList:
+                if(len(self.bigdict[room.id][time].people) > 1):
+                    for person in self.bigdict[room.id][time].people:
+                        person = self.getPersonFromID(person)
+                        if(len(person.contains) > 0):
+                            # contains a murder weapon
+                            possibleMurderers.append(person.id)
+        if(len(possibleMurderers) == 0):
+            print("regenerating")
+            self.gen.parent.generate()
+            
+        murderer = self.people[possibleMurderers[random.randint(0, len(possibleMurderers)-1)]]
+        murderer.isMurderer = True
 
 
