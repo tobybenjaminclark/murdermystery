@@ -177,7 +177,8 @@ class GUI():
         bg = self.sch[1])
         
         self.logo = Label(self.top_frame,
-        image = self.logoimgsmall)
+        image = self.logoimgsmall,
+        borderwidth=0)
 
         self.exit_button = Button(self.top_frame,
         text = "Exit1",
@@ -221,6 +222,18 @@ class GUI():
         self.master.destroy()
         quit()
 
+    def change_time(self, e, t):
+        print("LOL : ",t)
+        for but in self.time_buttons:
+            if but.cget('text') == t:
+                but.config(fg = self.sch[5])
+                self.currenttime = t
+            else:
+                but.config(fg = "black")
+        self.updateLowerInfoPanel(self.currentlocation)
+        self.master.update()
+
+
     def makeCanvas(self):
     
         self.canvasFrame = Frame(self.rightmaster,
@@ -231,28 +244,38 @@ class GUI():
 
         time_buttons = []
         
-        for x in range(0,5):
+        for timeb in self.program.generator.e.timeList:
             time_buttons.append(Button(
                 self.canvasFrame2,
-                text = x,
-                font = self.sch['bigfont'],
+                text = timeb,
+                command = lambda e = 0, t = timeb : self.change_time(e, t),
+                font = ("Arial 12 bold"),
+                width = 1,
                 highlightbackground=self.sch[1]
             ))
         
-        for x in range(0, len(time_buttons)):
-             time_buttons[x].grid(row=0,column=x)
-        canvascolspan = x
+        c = 0
+        for timeb in self.program.generator.e.timeList:
+             time_buttons[c].grid(row=1,column=c)
+             c = c + 1
+        canvascolspan = c
+        self.time_label = Label(self.canvasFrame2,
+        text = "Select a time to view",
+        fg = self.sch[3],
+        bg = self.sch[1],
+        font = self.sch['bigfont'])
+        self.time_label.grid(row=0,column=0,columnspan=canvascolspan+1)
+        self.time_buttons = time_buttons
 
         # scrollable canvas
         self.canvasframe3=Frame(self.canvasFrame,width=((((len(self.program.generator.rooms))//5)*95)+30),height=500)
-        self.canvasframe3.pack()
         self.canvas = Canvas(self.canvasframe3,
-        width = 600, height = 500,scrollregion=(0,0,((((len(self.program.generator.rooms))//5)*95)+30),500),
-        bg = self.sch[1])
+        width = 700, height = 500,scrollregion=(0,0,((((len(self.program.generator.rooms))//5)*95)+30),500),
+        bg = self.sch[1],borderwidth=0)
         self.hbar=Scrollbar(self.canvasframe3,orient=HORIZONTAL)
         self.hbar.pack(side=BOTTOM,fill=X)
         self.hbar.config(command=self.canvas.xview)
-        self.canvas.config(width=600,height=500)
+        self.canvas.config(width=700,height=500)
         self.canvas.config(xscrollcommand=self.hbar.set)
         self.canvas.pack(side=LEFT,expand=True,fill=BOTH)
 
@@ -266,7 +289,7 @@ class GUI():
         for l in locations:
             txt = l.roomName
             foo = self.canvas.create_oval(currentx,currenty,currentx+45,currenty+45,fill=self.colordict[txt.split()[0]])
-            foo2 = self.canvas.create_text(currentx+22,currenty+70,text=txt,font=self.sch['littlefont'])
+            foo2 = self.canvas.create_text(currentx+22,currenty+70,text=txt,font=self.sch['littlefont'],fill=self.sch[3])
             self.canvas.tag_bind(foo, '<ButtonPress-1>', lambda e, l2 = l:self.clicked_circle(e, l2))
             self.location_objects[l] = [foo,foo2]
             currenty += 95
@@ -301,7 +324,8 @@ class GUI():
         bg = self.sch[1])
 
     def updateLowerInfoPanel(self, location):
-
+        
+        self.currentlocation = location
         # Clears all previous data
         for widget in self.lower_infopanel.winfo_children():
             widget.destroy()
@@ -315,9 +339,10 @@ class GUI():
             locationc = self.program.generator.getLocationFromID(id)
             foo = Button(self.connectedFrame,
             text = locationc.roomName,
+            highlightbackground = self.sch[1],
             command = lambda e = 0, l = locationc:self.clicked_circle(e,l))
             foo.grid(row=0,column=x)
-        
+
 
         # Writes new data
         RoomName = Label(self.lower_infopanel,
@@ -326,6 +351,9 @@ class GUI():
         fg = self.sch[3],
         bg = self.sch[1])
         RoomName.pack()
+
+        eventi = self.program.generator.e.bigdict[location.id][self.currenttime]
+        print("Eventnstance : ",eventi.people)
         
         self.lower_infopanel.update()
         self.connectedFrame.pack()
@@ -335,12 +363,6 @@ class GUI():
         self.leftinfoframe = Frame(self.master,
         bg = self.sch[1])
 
-        self.infolabel = Label(self.leftinfoframe,
-        text = "Name: Fuck\nOccupation:Imposter",
-        font = self.sch['bigfont'],
-        bg = self.sch[1],
-        fg = self.sch[3])
-        self.infolabel.pack()
 
     def display_main(self):
 
@@ -357,7 +379,11 @@ class GUI():
         self.lower_infopanel.pack()
         self.rightmaster.grid(row=1,column=1)
         self.leftinfoframe.grid(row=1,column=0 )
-
+        
+        self.currenttime = "16:00"
+        self.updateLowerInfoPanel(self.program.generator.rooms[1])
+        self.clicked_circle(0, self.program.generator.rooms[1])
+        self.change_time(0,"16:00")
         self.master.update()
 
     def clear(self):

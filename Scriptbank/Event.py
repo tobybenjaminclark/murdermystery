@@ -22,6 +22,7 @@ class Event():
         self.initialRooms()
         self.generateEvents()
 
+
     def setupEvents(self):
         bigdict = {}
         for r in self.rooms:
